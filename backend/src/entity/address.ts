@@ -6,6 +6,9 @@ export class Address {
 	@PrimaryGeneratedColumn()
 	id: number;
 
+	@OneToOne(() => User, user => user.address)
+	user: User;
+
 	@Column()
 	cep: string;
 
