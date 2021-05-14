@@ -1,9 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Address } from './address';
+import { Order } from './order';
 
 @Entity()
 export class User {
 	@PrimaryGeneratedColumn()
 	id: number;
+
+	@OneToOne(() => Address, address => address.user)
+	@JoinColumn()
+	address: Address;
+
+	@OneToMany(() => Order, order => order.user)
+	orderArr?: Order[];
 
 	@Column()
 	fullName: string;
@@ -23,6 +32,6 @@ export class User {
 	@UpdateDateColumn()
 	lastLoginDate: Date;
 
-	@Column()
+	@Column({default: true})
 	isActive: boolean;
 }

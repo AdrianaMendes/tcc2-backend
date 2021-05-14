@@ -1,16 +1,24 @@
-import { OrderStatus } from 'src/enum/OrderStatus';
-import { PaymentType } from 'src/enum/PaymentType';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { OrderStatus } from 'src/enum/orderStatus';
+import { PaymentType } from 'src/enum/paymentType';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from 'typeorm';
+import { OrderProduct } from './orderProduct';
+import { User } from './user';
 
 @Entity()
 export class Order {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column()
+	@ManyToOne(() => User, user => user.orderArr)
+	user: User;
+
+	@OneToMany(() => OrderProduct, orderProductArr => orderProductArr.order)
+	orderProductArr: OrderProduct[];
+
+	@Column({ type: 'enum', enum: PaymentType })
 	paymentType: PaymentType;
 
-	@Column()
+	@Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.OPEN, nullable: false })
 	status: OrderStatus;
 
 	@Column()

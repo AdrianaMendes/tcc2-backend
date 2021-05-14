@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import { User } from './user';
 
 @Entity()
 export class Address {
@@ -24,5 +25,5 @@ export class Address {
 	number: number;
 
 	@Column()
-	complement: string;
+	complement?: string;
 }
