@@ -1,8 +1,8 @@
-import { OrderStatus } from 'src/enum/orderStatus';
-import { PaymentType } from 'src/enum/paymentType';
+import { OrderStatus } from 'src/entity/enum/order-status';
+import { PaymentType } from 'src/entity/enum/payment-type';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from 'typeorm';
-import { OrderProduct } from './orderProduct';
-import { User } from './user';
+import { OrderProduct } from '../order-product/order-product';
+import { User } from '../user/user';
 
 @Entity()
 export class Order {

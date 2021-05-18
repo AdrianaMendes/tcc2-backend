@@ -1,6 +1,7 @@
+import { UserRole } from 'src/entity/enum/user-role';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
-import { Address } from './address';
-import { Order } from './order';
+import { Address } from '../address/address';
+import { Order } from '../order/order';
 
 @Entity()
 export class User {
@@ -25,6 +26,9 @@ export class User {
 
 	@Column()
 	image: string;
+
+	@Column({ type: 'enum', enum: UserRole })
+	userRole: UserRole;
 
 	@CreateDateColumn()
 	creationDate: Date;
