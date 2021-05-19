@@ -1,4 +1,4 @@
-import { ProductDto } from '../../product/dto/create-product.dto';
+import { ProductDto } from '../../product/dto/product.dto';
 
 export class CategoryDto {
 	productDtoArr: ProductDto[];

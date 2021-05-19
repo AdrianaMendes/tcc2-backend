@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
-import { User } from '../user/user';
+import { User } from '../user/user.entity';
 
-@Entity()
+@Entity('address')
 export class Address {
 	@PrimaryGeneratedColumn()
 	id: number;
@@ -27,6 +27,6 @@ export class Address {
 	@Column()
 	number: number;
 
-	@Column()
+	@Column({ nullable: true })
 	complement?: string;
 }

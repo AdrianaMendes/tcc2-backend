@@ -1,19 +1,19 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
-@Entity()
+@Entity('sale')
 export class Sale {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@CreateDateColumn()
+	@CreateDateColumn({ name: 'creation_date' })
 	creationDate: Date;
 
-	@Column()
+	@Column({ name: 'begin_date' })
 	beginDate: Date;
 
-	@Column()
+	@Column({ name: 'end_date' })
 	endDate: Date;
 
-	@Column()
+	@Column({name: 'percentage_value'})
 	percentageValue: number;
 }

@@ -1,9 +1,9 @@
-import { UserRole } from 'src/entity/enum/user-role';
+import { EUserRole } from 'src/enum/user-role';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
-import { Address } from '../address/address';
-import { Order } from '../order/order';
+import { Address } from '../address/address.entity';
+import { Order } from '../order/order.entity';
 
-@Entity()
+@Entity('user')
 export class User {
 	@PrimaryGeneratedColumn()
 	id: number;
@@ -15,7 +15,7 @@ export class User {
 	@OneToMany(() => Order, order => order.user)
 	orderArr?: Order[];
 
-	@Column()
+	@Column({ name: 'full_name' })
 	fullName: string;
 
 	@Column()
@@ -24,18 +24,18 @@ export class User {
 	@Column()
 	password: string;
 
-	@Column()
-	image: string;
+	@Column({nullable: true})
+	image?: string;
 
-	@Column({ type: 'enum', enum: UserRole })
-	userRole: UserRole;
+	@Column({ name: 'user_role', type: 'enum', enum: EUserRole, default: EUserRole.USER })
+	userRole: EUserRole;
 
-	@CreateDateColumn()
+	@CreateDateColumn({ name: 'creation_date' })
 	creationDate: Date;
 
-	@UpdateDateColumn()
+	@UpdateDateColumn({ name: 'last_login_date' })
 	lastLoginDate: Date;
 
-	@Column({default: true})
+	@Column({ name: 'is_active', default: true })
 	isActive: boolean;
 }

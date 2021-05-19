@@ -1,8 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToOne } from 'typeorm';
-import { Order } from '../order/order';
+import { Order } from '../order/order.entity';
 import { ProductEntity } from '../product/product.entity';
 
-@Entity()
+@Entity('order_product')
 export class OrderProduct {
 	@PrimaryGeneratedColumn()
 	id: number;
@@ -16,6 +16,6 @@ export class OrderProduct {
 	@Column()
 	amount: number;
 
-	@Column()
+	@Column({ name: 'original_value' })
 	originalValue: number;
 }

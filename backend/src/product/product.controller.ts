@@ -1,4 +1,6 @@
 import { Controller, Post, Get, Param, Body } from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger';
+import { ProductDto } from './dto/product.dto';
 import { ProductEntity } from './product.entity';
 import { ProductService } from './product.service';
 
@@ -9,7 +11,8 @@ export class ProductController {
 	}
 
 	@Post()
-	async create(@Body() obj: ProductEntity): Promise<ProductEntity> {
+	@ApiBody({ type: ProductDto })
+	async create(@Body() obj: ProductDto): Promise<ProductEntity> {
 		return await this.productSevice.create(obj);
 	}
 
