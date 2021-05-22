@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -7,15 +7,16 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryEntity } from './entities/category.entity';
 
 @Controller('category')
-@ApiTags('category')
+@ApiTags('Categoria')
 export class CategoryController {
 
 	constructor(private readonly categoryService: CategoryService) { }
 
 	@Post('/create')
 	@ApiBody({ type: CreateCategoryDto })
-	async create(@Body() obj: CreateCategoryDto): Promise<CategoryEntity> {
-		return await this.categoryService.create(obj);
+	@ApiResponse({ status: 201, description: 'Categoria criado'})
+	async create(@Body() dto: CreateCategoryDto): Promise<CategoryEntity> {
+		return await this.categoryService.create(dto);
 	}
 
 	@Get('findAll')
@@ -30,8 +31,8 @@ export class CategoryController {
 
 	@Patch('update/:id')
 	@ApiBody({ type: UpdateCategoryDto })
-	async update(@Param('id') id: number, @Body() obj: UpdateCategoryDto): Promise<UpdateResult> {
-		return await this.categoryService.update(id, obj);
+	async update(@Param('id') id: number, @Body() dto: UpdateCategoryDto): Promise<UpdateResult> {
+		return await this.categoryService.update(id, dto);
 	}
 
 	@Delete('remove/:id')

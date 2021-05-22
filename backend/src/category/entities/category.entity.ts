@@ -6,7 +6,7 @@ export class CategoryEntity {
 	@PrimaryGeneratedColumn({ type: 'smallint' })
 	id: number;
 
-	@OneToMany(() => ProductEntity, productArr => productArr.category)
+	@OneToMany(() => ProductEntity, productArr => productArr.category, { cascade: true })
 	productArr: ProductEntity[];
 
 	@Column({ type: 'varchar', length: 64 })
@@ -17,4 +17,10 @@ export class CategoryEntity {
 
 	@Column({ nullable: true })
 	image?: string;
+
+	constructor(name: string, description: string, image: string) {
+		this.name = name;
+		this.description = description;
+		this.image = image;
+	}
 }

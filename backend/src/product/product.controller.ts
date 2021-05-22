@@ -1,5 +1,5 @@
 import { Controller, Post, Get, Param, Body, Patch, Delete } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -7,15 +7,15 @@ import { ProductEntity } from './entities/product.entity';
 import { ProductService } from './product.service';
 
 @Controller('product')
-@ApiTags('product')
+@ApiTags('Produto')
 export class ProductController {
 
 	constructor(private readonly productSevice: ProductService) { }
 
 	@Post('create/')
 	@ApiBody({ type: CreateProductDto })
-	async create(@Body() obj: CreateProductDto): Promise<ProductEntity> {
-		return await this.productSevice.create(obj);
+	async create(@Body() dto: CreateProductDto): Promise<ProductEntity> {
+		return await this.productSevice.create(dto);
 	}
 
 	@Get('findAll')
@@ -30,11 +30,12 @@ export class ProductController {
 
 	@Patch('update/:id')
 	@ApiBody({ type: UpdateProductDto })
-	async update(@Param('id') id: number, @Body() obj: UpdateProductDto): Promise<UpdateResult> {
-		return await this.productSevice.update(id, obj);
+	async update(@Param('id') id: number, @Body() dto: UpdateProductDto): Promise<UpdateResult> {
+		return await this.productSevice.update(id, dto);
 	}
 
 	@Patch('toggleAvailability/:id')
+	@ApiOperation({description: 'Endpoint utilizado para efetuar exclusão lógica.'})
 	async toggleAvailability(@Param('id') id: number): Promise<ProductEntity> {
 		return await this.productSevice.toggleAvailability(id);
 	}

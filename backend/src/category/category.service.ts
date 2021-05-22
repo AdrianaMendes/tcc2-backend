@@ -11,8 +11,8 @@ export class CategoryService {
 	constructor(@InjectRepository(CategoryEntity) private categoryRepository: Repository<CategoryEntity>) {
 	}
 
-	async create(obj: CreateCategoryDto): Promise<CategoryEntity> {
-		const result = await this.categoryRepository.save(obj);
+	async create(dto: CreateCategoryDto): Promise<CategoryEntity> {
+		const result = await this.categoryRepository.save(dto);
 		return result;
 	}
 
@@ -26,9 +26,10 @@ export class CategoryService {
 		return result;
 	}
 
-	async update(id: number, obj: UpdateCategoryDto): Promise<UpdateResult> {
-		const newObj = {id, ...obj};
-		const result = await this.categoryRepository.update(newObj.id, newObj);
+	async update(id: number, dto: UpdateCategoryDto): Promise<UpdateResult> {
+		const { name, description, image } = dto;
+		const updateEntity = new CategoryEntity(name, description, image);
+		const result = await this.categoryRepository.update(id, updateEntity);
 		return result;
 	}
 

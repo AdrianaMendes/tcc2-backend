@@ -1,12 +1,12 @@
 import { CategoryEntity } from 'src/category/entities/category.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
-@Entity('product_entity')
+@Entity('product')
 export class ProductEntity {
 	@PrimaryGeneratedColumn({ type: 'smallint' })
 	id: number;
 
-	@ManyToOne(() => CategoryEntity, category => category.productArr, { eager: true })
+	@ManyToOne(() => CategoryEntity, category => category.productArr, { onDelete: 'CASCADE', eager: true })
 	category: CategoryEntity;
 
 	@Column({ type: 'varchar', length: 64 })
@@ -29,5 +29,14 @@ export class ProductEntity {
 
 	toggleAvailability(): void {
 		this.isActive = !this.isActive;
+	}
+
+	constructor(name: string, description: string, image: string, amount: number, value: number) {
+		this.name = name;
+		this.description = description;
+		this.image = image;
+		this.amount = amount;
+		this.value = value;
+		this.isActive = true;
 	}
 }
