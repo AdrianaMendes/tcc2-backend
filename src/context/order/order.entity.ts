@@ -1,5 +1,5 @@
-import { EOrderStatus } from 'src/shared/enum/order-status';
-import { EPaymentType } from 'src/shared/enum/payment-type';
+import { EOrderStatus } from 'src/shared/enum/order-status.enum';
+import { EPaymentType } from 'src/shared/enum/payment-type.enum';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from 'typeorm';
 import { OrderProduct } from '../order-product/order-product.entity';
 import { User } from '../user/user.entity';

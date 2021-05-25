@@ -1,6 +1,7 @@
 import { Controller, Post, Get, Param, Body, Patch, Delete, UsePipes, ValidationPipe, HttpStatus } from '@nestjs/common';
 import { ApiBody, ApiExcludeEndpoint, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DeleteResult, UpdateResult } from 'typeorm';
+import { ICommonController } from '../../shared/interface/common-controller.interface';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
@@ -9,7 +10,7 @@ import { ProductService } from './product.service';
 @Controller('product')
 @ApiTags('Produto')
 @UsePipes(new ValidationPipe())
-export class ProductController {
+export class ProductController implements ICommonController<ProductEntity, CreateProductDto, UpdateProductDto> {
 
 	constructor(private readonly productSevice: ProductService) { }
 

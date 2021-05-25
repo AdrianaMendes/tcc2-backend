@@ -2,12 +2,13 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from 'src/context/category/entities/category.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { ICommonService } from '../../shared/interface/common-service.interface';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
 
 @Injectable()
-export class ProductService {
+export class ProductService implements ICommonService<ProductEntity, CreateProductDto, UpdateProductDto> {
 
 	constructor(
 		@InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>,

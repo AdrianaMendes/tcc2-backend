@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, HttpStatus } from '@nestjs/common';
 import { ApiBody, ApiExcludeEndpoint, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DeleteResult, UpdateResult } from 'typeorm';
+import { ICommonController } from '../../shared/interface/common-controller.interface';
+import { ProductEntity } from '../product/entities/product.entity';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -9,7 +11,7 @@ import { CategoryEntity } from './entities/category.entity';
 @Controller('category')
 @ApiTags('Categoria')
 @UsePipes(new ValidationPipe())
-export class CategoryController {
+export class CategoryController implements ICommonController<CategoryEntity, CreateCategoryDto, UpdateCategoryDto> {
 
 	constructor(private readonly categoryService: CategoryService) { }
 
@@ -30,6 +32,13 @@ export class CategoryController {
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Categoria não encontrada' })
 	async findOne(@Param('id') id: number): Promise<CategoryEntity> {
 		return await this.categoryService.findOne(id);
+	}
+
+	@Get('findAllProduct/:id')
+	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Categoria não encontrada' })
+	@ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Não há produto cadastrado com a categoria' })
+	async findAllProduct(@Param('id') id: number): Promise<ProductEntity[]> {
+		return await this.categoryService.findAllProduct(id);
 	}
 
 	@Patch('update/:id')
