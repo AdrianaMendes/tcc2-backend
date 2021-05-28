@@ -1,7 +1,6 @@
 import { EOrderStatus } from 'src/shared/enum/order-status.enum';
 import { EPaymentType } from 'src/shared/enum/payment-type.enum';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from 'typeorm';
-import { OrderProduct } from '../order-product/order-product.entity';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { User } from '../user/user.entity';
 
 @Entity('order')
@@ -11,10 +10,10 @@ export class Order {
 
 	@ManyToOne(() => User, user => user.orderArr)
 	user: User;
-
-	@OneToMany(() => OrderProduct, orderProductArr => orderProductArr.order)
-	orderProductArr: OrderProduct[];
-
+	/*
+	@OneToMany(() => OrderProductEntity, orderProductArr => orderProductArr.order)
+	orderProductArr: OrderProductEntity[];
+	*/
 	@Column({ name: 'payment_type', type: 'enum', enum: EPaymentType })
 	paymentType: EPaymentType;
 

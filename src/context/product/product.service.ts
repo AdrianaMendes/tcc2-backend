@@ -2,13 +2,13 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from 'src/context/category/entities/category.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { ICommonService } from '../../shared/interface/common-service.interface';
+import { ICommonServiceSoftDelete } from '../../shared/interface/common-service-soft-delete.interface';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
 
 @Injectable()
-export class ProductService implements ICommonService<ProductEntity, CreateProductDto, UpdateProductDto> {
+export class ProductService implements ICommonServiceSoftDelete<ProductEntity, CreateProductDto, UpdateProductDto> {
 
 	constructor(
 		@InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>,
@@ -39,8 +39,28 @@ export class ProductService implements ICommonService<ProductEntity, CreateProdu
 		return entityArr;
 	}
 
+	async findAllActive(): Promise<ProductEntity[]> {
+		const entityArr = await this.productRepository.find({ relations: ['category'], where: { isActive: true } });
+
+		if (entityArr.length === 0) {
+			throw new HttpException('Não há produto cadastrado', HttpStatus.NO_CONTENT);
+		}
+
+		return entityArr;
+	}
+
 	async findOne(id: number): Promise<ProductEntity> {
 		const result = await this.productRepository.findOne(id, { relations: ['category'] });
+
+		if (!result) {
+			throw new HttpException(`Não há produto com id: ${id}`, HttpStatus.NOT_FOUND);
+		}
+
+		return result;
+	}
+
+	async findOneActive(id: number): Promise<ProductEntity> {
+		const result = await this.productRepository.findOne(id, { relations: ['category'], where: { isActive: true } });
 
 		if (!result) {
 			throw new HttpException(`Não há produto com id: ${id}`, HttpStatus.NOT_FOUND);
