@@ -1,16 +1,17 @@
 import { EUserRole } from 'src/shared/enum/user-role.enum';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne } from 'typeorm';
+import { AddressEntity } from './address.entity';
 
 @Entity('user')
 export class UserEntity {
 	@PrimaryGeneratedColumn({ type: 'smallint' })
 	id: number;
 
-	/*
-	@OneToOne(() => Address, address => address.user)
-	@JoinColumn()
-	address: Address;
+	@OneToOne(() => AddressEntity)
+	@JoinColumn({ name: 'address_id' })
+	address: AddressEntity;
 
+	/*
 	@OneToMany(() => Order, order => order.user)
 	orderArr?: Order[];
 	*/
@@ -27,8 +28,8 @@ export class UserEntity {
 	@Column({ nullable: true })
 	image?: string;
 
-	@Column({ name: 'user_role', type: 'enum', enum: EUserRole, default: EUserRole.USER })
-	userRole: EUserRole;
+	@Column({ type: 'enum', enum: EUserRole, default: EUserRole.USER })
+	role: EUserRole;
 
 	@CreateDateColumn({ name: 'creation_date' })
 	creationDate: Date;

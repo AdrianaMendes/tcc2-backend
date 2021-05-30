@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsEnum, Length } from 'class-validator';
 import { EUserRole } from '../../../shared/enum/user-role.enum';
+import { CreateAddressDto } from './create-address.dto';
 
 export class CreateUserDto {
 
@@ -21,5 +22,8 @@ export class CreateUserDto {
 
 	@ApiProperty({ enum: EUserRole, default: EUserRole.USER })
 	@IsEnum(EUserRole)
-	readonly userRole: EUserRole;
+	readonly role: EUserRole;
+
+	@ApiProperty({ required: false })
+	readonly address: CreateAddressDto;
 }

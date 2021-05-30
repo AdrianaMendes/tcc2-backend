@@ -16,50 +16,63 @@ export class CategoryService implements ICommonService<CategoryEntity, CreateCat
 	}
 
 	async create(dto: CreateCategoryDto): Promise<CategoryEntity> {
-		const result = await this.categoryRepository.save(dto);
-		return result;
+		return await this.categoryRepository.save(dto);
 	}
 
 	async findAll(): Promise<CategoryEntity[]> {
-		const entityArr = await this.categoryRepository.find();
+		const categoryArr = await this.categoryRepository.find();
 
-		if (entityArr.length === 0) {
+		if (categoryArr.length === 0) {
 			throw new HttpException('Não há categoria cadastrada', HttpStatus.NO_CONTENT);
 		}
 
-		return entityArr;
+		return categoryArr;
 	}
 
 	async findOne(id: number): Promise<CategoryEntity> {
-		const result = await this.categoryRepository.findOne(id);
+		const category = await this.categoryRepository.findOne(id);
 
-		if (!result) {
+		if (!category) {
 			throw new HttpException(`Não há categoria com id: ${id}`, HttpStatus.NOT_FOUND);
 		}
 
-		return result;
+		return category;
 	}
 
 	async findAllProduct(id: number): Promise<ProductEntity[]> {
-		const result = await this.categoryRepository.findOne(id);
+		const category = await this.categoryRepository.findOne(id);
 
-		if (!result) {
+		if (!category) {
 			throw new HttpException(`Não há categoria com id: ${id}`, HttpStatus.NOT_FOUND);
 		}
 
-		const entityArr = await this.productRepository.find({ where: { category: id } });
+		const productArr = await this.productRepository.find({ where: { category: id } });
 
-		if (entityArr.length === 0) {
+		if (productArr.length === 0) {
 			throw new HttpException(`Não há produto cadastrado com a categoria de id: ${id}`, HttpStatus.NO_CONTENT);
 		}
 
-		return entityArr;
+		return productArr;
+	}
+
+	async findAllProductActive(id: number): Promise<ProductEntity[]> {
+		const category = await this.categoryRepository.findOne(id);
+
+		if (!category) {
+			throw new HttpException(`Não há categoria com id: ${id}`, HttpStatus.NOT_FOUND);
+		}
+
+		const productArr = await this.productRepository.find({ where: { category: id, isActive: true } });
+
+		if (productArr.length === 0) {
+			throw new HttpException(`Não há produto cadastrado com a categoria de id: ${id}`, HttpStatus.NO_CONTENT);
+		}
+
+		return productArr;
 	}
 
 	async update(id: number, dto: UpdateCategoryDto): Promise<UpdateResult> {
-		const { name, description, image } = dto;
-		const updateEntity = new CategoryEntity(name, description, image);
-		const result = await this.categoryRepository.update(id, updateEntity);
+		const result = await this.categoryRepository.update(id, dto);
 
 		if (result.affected === 0) {
 			throw new HttpException(`Não há categoria com id: ${id}`, HttpStatus.NOT_FOUND);
@@ -69,7 +82,6 @@ export class CategoryService implements ICommonService<CategoryEntity, CreateCat
 	}
 
 	async remove(id: number): Promise<DeleteResult> {
-		const result = await this.categoryRepository.delete(id);
-		return result;
+		return await this.categoryRepository.delete(id);
 	}
 }

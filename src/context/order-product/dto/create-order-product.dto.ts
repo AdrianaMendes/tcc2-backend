@@ -15,4 +15,6 @@ export class CreateOrderProductDto {
 	@IsPositive()
 	@Max(9999)
 	readonly amount: number;
+
+	originalProductValue: number;
 }

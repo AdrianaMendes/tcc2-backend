@@ -16,28 +16,21 @@ export class OrderProductService implements ICommonService<OrderProductEntity, C
 	) { }
 
 	async create(dto: CreateOrderProductDto): Promise<OrderProductEntity> {
-		const { productId, amount } = dto;
-		const product: ProductEntity = await this.productRepository.findOne(productId, { where: { isActive: true } });
+		const product = await this.productRepository.findOne(dto.productId, { where: { isActive: true } });
 
 		if (!product) {
-			throw new HttpException(`Não há produto com id: ${productId}`, HttpStatus.NOT_FOUND);
+			throw new HttpException(`Não há produto com id: ${dto.productId}`, HttpStatus.NOT_FOUND);
 		}
 
-		if (amount > product.amount) {
+		if (dto.amount > product.amount) {
 			throw new HttpException('Estoque insuficente de produto', HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 
-		const orderProduct = new OrderProductEntity(amount);
-
 		// Remove a quantidade de produto no estoque
-		product.amount -= amount;
+		product.amount -= dto.amount;
+		dto.originalProductValue = product.value;
 
-		orderProduct.originalProductValue = product.value;
-		orderProduct.product = product;
-
-		const result = await this.orderProductRepository.save(orderProduct);
-
-		return result;
+		return await this.orderProductRepository.save({ ...dto, product });
 	}
 
 	async findAll(): Promise<OrderProductEntity[]> {

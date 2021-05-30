@@ -4,28 +4,21 @@ import { UpdateResult, DeleteResult, Repository } from 'typeorm';
 import { ICommonServiceSoftDelete } from '../../shared/interface/common-service-soft-delete.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AddressEntity } from './entities/address.entity';
 import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UserService implements ICommonServiceSoftDelete<UserEntity, CreateUserDto, UpdateUserDto> {
 
-	constructor(@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>) { }
+	constructor(@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>, @InjectRepository(AddressEntity) private addressRepository: Repository<AddressEntity>) { }
 
 	async create(dto: CreateUserDto): Promise<UserEntity> {
-		const { fullName, email, userRole, password, image } = dto;
-
-		const user: UserEntity = new UserEntity();
-		user.fullName = fullName;
-		user.email = email;
-		user.password = password;
-		user.userRole = userRole;
-		user.image = image;
-
-		return await this.userRepository.save(user);
+		await this.addressRepository.save(dto.address);
+		return await this.userRepository.save(dto);
 	}
 
 	async findAll(): Promise<UserEntity[]> {
-		const userArr = await this.userRepository.find();
+		const userArr = await this.userRepository.find({ relations: ['address'] });
 
 		if (userArr.length === 0) {
 			throw new HttpException('Não há usuário cadastrado', HttpStatus.NO_CONTENT);
@@ -35,7 +28,7 @@ export class UserService implements ICommonServiceSoftDelete<UserEntity, CreateU
 	}
 
 	async findAllActive(): Promise<UserEntity[]> {
-		const userArr = await this.userRepository.find({ where: { isActive: true } });
+		const userArr = await this.userRepository.find({ relations: ['address'], where: { isActive: true } });
 
 		if (userArr.length === 0) {
 			throw new HttpException('Não há usuário cadastrado', HttpStatus.NO_CONTENT);
@@ -45,7 +38,7 @@ export class UserService implements ICommonServiceSoftDelete<UserEntity, CreateU
 	}
 
 	async findOne(id: number): Promise<UserEntity> {
-		const user = await this.userRepository.findOne(id);
+		const user = await this.userRepository.findOne(id, { relations: ['address'] });
 
 		if (!user) {
 			throw new HttpException(`Não há usuário com id: ${id}`, HttpStatus.NOT_FOUND);
@@ -55,7 +48,7 @@ export class UserService implements ICommonServiceSoftDelete<UserEntity, CreateU
 	}
 
 	async findOneActive(id: number): Promise<UserEntity> {
-		const user = await this.userRepository.findOne(id, { where: { isActive: true } });
+		const user = await this.userRepository.findOne(id, { relations: ['address'], where: { isActive: true } });
 
 		if (!user) {
 			throw new HttpException(`Não há usuário com id: ${id}`, HttpStatus.NOT_FOUND);
@@ -65,16 +58,7 @@ export class UserService implements ICommonServiceSoftDelete<UserEntity, CreateU
 	}
 
 	async update(id: number, dto: UpdateUserDto): Promise<UpdateResult> {
-		const { fullName, email, userRole, password, image } = dto;
-
-		const userUpdate: UserEntity = new UserEntity();
-		userUpdate.fullName = fullName;
-		userUpdate.email = email;
-		userUpdate.password = password;
-		userUpdate.userRole = userRole;
-		userUpdate.image = image;
-
-		const result = await this.userRepository.update(id, userUpdate);
+		const result = await this.userRepository.update(id, dto);
 
 		if (result.affected === 0) {
 			throw new HttpException(`Não há usuário com id: ${id}`, HttpStatus.NOT_FOUND);

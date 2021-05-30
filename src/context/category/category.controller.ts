@@ -41,6 +41,13 @@ export class CategoryController implements ICommonController<CategoryEntity, Cre
 		return await this.categoryService.findAllProduct(id);
 	}
 
+	@Get('findAllProductActive/:id')
+	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Categoria não encontrada' })
+	@ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Não há produto cadastrado com a categoria' })
+	async findAllProductActive(@Param('id') id: number): Promise<ProductEntity[]> {
+		return await this.categoryService.findAllProductActive(id);
+	}
+
 	@Patch('update/:id')
 	@ApiBody({ type: UpdateCategoryDto })
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Categoria não encontrada' })

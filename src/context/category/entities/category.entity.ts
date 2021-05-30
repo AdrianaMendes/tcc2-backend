@@ -17,10 +17,4 @@ export class CategoryEntity {
 
 	@Column({ nullable: true })
 	image?: string;
-
-	constructor(name: string, description: string, image: string) {
-		this.name = name;
-		this.description = description;
-		this.image = image;
-	}
 }
