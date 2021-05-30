@@ -8,7 +8,7 @@ import { UpdateResult, DeleteResult } from 'typeorm';
 import { UpdateOrderProductDto } from './dto/update-order-product.dto';
 
 @Controller('order-product')
-@ApiTags('Pedido de produto')
+@ApiTags('Pedido do produto')
 @UsePipes(new ValidationPipe())
 export class OrderProductController implements ICommonController<OrderProductEntity, CreateOrderProductDto, UpdateOrderProductDto> {
 
@@ -34,14 +34,15 @@ export class OrderProductController implements ICommonController<OrderProductEnt
 		return await this.orderProductService.findOne(id);
 	}
 
-	@Patch('update/:id')
-	@ApiBody({ type: UpdateOrderProductDto })
+	@Patch('update/:id/:amount')
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Pedido de produto não encontrado' })
-	async update(@Param('id') id: number, @Body() dto: UpdateOrderProductDto): Promise<UpdateResult> {
-		return await this.orderProductService.update(id, dto);
+	@ApiResponse({ status: HttpStatus.UNPROCESSABLE_ENTITY, description: 'Estoque insuficente de produto' })
+	async update(@Param('id') id: number, @Param('amount') amount: number): Promise<UpdateResult> {
+		return await this.orderProductService.update(id, amount);
 	}
 
 	@Delete('remove/:id')
+	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Pedido de produto não encontrado' })
 	async remove(@Param('id') id: number): Promise<DeleteResult> {
 		return await this.orderProductService.remove(id);
 	}

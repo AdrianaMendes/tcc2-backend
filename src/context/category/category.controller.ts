@@ -15,7 +15,7 @@ export class CategoryController implements ICommonController<CategoryEntity, Cre
 
 	constructor(private readonly categoryService: CategoryService) { }
 
-	@Post('/create')
+	@Post('create')
 	@ApiBody({ type: CreateCategoryDto })
 	@ApiResponse({ status: HttpStatus.CREATED, description: 'Categoria criado' })
 	async create(@Body() dto: CreateCategoryDto): Promise<CategoryEntity> {

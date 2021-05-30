@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';
 import { ProductEntity } from '../../product/entities/product.entity';
 
 @Entity('order_product')
@@ -11,8 +11,8 @@ export class OrderProductEntity {
 	order: Order;
 	*/
 
-	@OneToOne(() => ProductEntity, { cascade: true })
-	@JoinColumn()
+	@ManyToOne(() => ProductEntity, { cascade: true })
+	@JoinColumn({ name: 'product_id' })
 	product: ProductEntity;
 
 	@Column({ type: 'smallint' })

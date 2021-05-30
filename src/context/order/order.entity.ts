@@ -1,16 +1,16 @@
 import { EOrderStatus } from 'src/shared/enum/order-status.enum';
 import { EPaymentType } from 'src/shared/enum/payment-type.enum';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
-import { User } from '../user/user.entity';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('order')
 export class Order {
 	@PrimaryGeneratedColumn()
 	id: number;
 
+	/*
 	@ManyToOne(() => User, user => user.orderArr)
 	user: User;
-	/*
+
 	@OneToMany(() => OrderProductEntity, orderProductArr => orderProductArr.order)
 	orderProductArr: OrderProductEntity[];
 	*/

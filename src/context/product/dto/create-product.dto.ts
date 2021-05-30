@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsPositive, Length, Max, MaxLength, Min } from 'class-validator';
+import { IsPositive, Length, Max, MaxLength, Min } from 'class-validator';
 
 export class CreateProductDto {
 
@@ -8,7 +8,6 @@ export class CreateProductDto {
 	readonly categoryId: number;
 
 	@ApiProperty({ minLength: 1, maxLength: 64, default: 'Nome do produto' })
-	@IsNotEmpty()
 	@Length(1, 64)
 	readonly name: string;
 

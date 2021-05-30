@@ -4,6 +4,7 @@ import { CategoryEntity } from 'src/context/category/entities/category.entity';
 import { ProductEntity } from 'src/context/product/entities/product.entity';
 import * as dotenv from 'dotenv';
 import { OrderProductEntity } from '../context/order-product/entities/order-product.entity';
+import { UserEntity } from '../context/user/entities/user.entity';
 
 // TODO Melhorar o import do .ENV
 
@@ -27,7 +28,7 @@ const objEnv = {
 	username: process.env.DATABASE_USER || 'postgres',
 	password: process.env.DATABASE_PASSWORD || '1234',
 	database: process.env.DATABASE || 'postgres',
-	entities: [CategoryEntity, ProductEntity, OrderProductEntity],
+	entities: [CategoryEntity, ProductEntity, OrderProductEntity, UserEntity],
 	synchronize: true,
 };
 

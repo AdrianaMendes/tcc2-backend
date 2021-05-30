@@ -1,5 +1,5 @@
 import { CategoryEntity } from 'src/context/category/entities/category.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity('product')
 export class ProductEntity {
@@ -7,6 +7,7 @@ export class ProductEntity {
 	id: number;
 
 	@ManyToOne(() => CategoryEntity, category => category.productArr, { onDelete: 'CASCADE' })
+	@JoinColumn({ name: 'category_id' })
 	category: CategoryEntity;
 
 	@Column({ type: 'varchar', length: 64 })

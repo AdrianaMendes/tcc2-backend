@@ -4,7 +4,6 @@ import { UpdateResult, DeleteResult, Repository } from 'typeorm';
 import { ICommonService } from '../../shared/interface/common-service.interface';
 import { ProductEntity } from '../product/entities/product.entity';
 import { CreateOrderProductDto } from './dto/create-order-product.dto';
-import { UpdateOrderProductAmountDto } from './dto/update-order-product-amount.dto';
 import { UpdateOrderProductDto } from './dto/update-order-product.dto';
 import { OrderProductEntity } from './entities/order-product.entity';
 
@@ -18,7 +17,7 @@ export class OrderProductService implements ICommonService<OrderProductEntity, C
 
 	async create(dto: CreateOrderProductDto): Promise<OrderProductEntity> {
 		const { productId, amount } = dto;
-		const product: ProductEntity = await this.productRepository.findOne(productId);
+		const product: ProductEntity = await this.productRepository.findOne(productId, { where: { isActive: true } });
 
 		if (!product) {
 			throw new HttpException(`Não há produto com id: ${productId}`, HttpStatus.NOT_FOUND);
@@ -61,14 +60,29 @@ export class OrderProductService implements ICommonService<OrderProductEntity, C
 		return orderProduct;
 	}
 
-	async update(id: number, dto: UpdateOrderProductDto): Promise<UpdateResult> {
-		// TODO Atualizar o pedido
-		throw new Error('Method not implemented.');
-	}
+	async update(id: number, amount: number): Promise<UpdateResult> {
+		const orderProduct = await this.orderProductRepository.findOne(id, { relations: ['product'] });
 
-	async updateAmount(id: number, dto: UpdateOrderProductAmountDto): Promise<UpdateResult> {
-		// TODO Atualizar a quantidade de produto no pedido
-		throw new Error('Method not implemented.');
+		if (!orderProduct) {
+			throw new HttpException(`Não há pedido do produto com id: ${id}`, HttpStatus.NOT_FOUND);
+		}
+
+		const product = orderProduct.product;
+
+		if (amount > product.amount) {
+			throw new HttpException('Estoque insuficente de produto', HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+
+		// Atualiza o estoque
+		product.amount = product.amount + orderProduct.amount - amount;
+
+		// Atualiza a quantidade do pedido
+		orderProduct.amount = amount;
+
+		const result = await this.orderProductRepository.update(orderProduct.id, orderProduct);
+		await this.productRepository.update(product.id, product);
+
+		return result;
 	}
 
 	async remove(id: number): Promise<DeleteResult> {

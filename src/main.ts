@@ -7,7 +7,6 @@ async function bootstrap() {
 
 	const config = new DocumentBuilder()
 		.setTitle('Backend APP')
-		.setDescription('Backend APP')
 		.setVersion('1.0')
 		.build();
 
@@ -19,15 +18,14 @@ async function bootstrap() {
 	const customOptions: SwaggerCustomOptions = {
 		swaggerOptions: {
 			filter: true,
-			showRequestDuration: true
+			showRequestDuration: true,
+			docExpansion: 'none'
 		}
 	};
 
 	SwaggerModule.setup('api', app, document, customOptions);
 
-	app.enableCors();
-
-	await app.listen( parseInt(process.env.PORT, 10) || 3000 );
+	await app.listen(parseInt(process.env.PORT, 10) || 3000);
 }
 
 bootstrap();
