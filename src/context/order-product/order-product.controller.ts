@@ -1,16 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, HttpStatus } from '@nestjs/common';
-import { OrderProductService } from './order-product.service';
+import { DeleteResult, UpdateResult } from 'typeorm';
+
+import {
+	Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, UseGuards
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+
 import { CreateOrderProductDto } from './dto/create-order-product.dto';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ICommonController } from '../../shared/interface/common-controller.interface';
 import { OrderProductEntity } from './entities/order-product.entity';
-import { UpdateResult, DeleteResult } from 'typeorm';
-import { UpdateOrderProductDto } from './dto/update-order-product.dto';
+import { OrderProductService } from './order-product.service';
 
 @Controller('order-product')
 @ApiTags('Pedido do produto')
-@UsePipes(new ValidationPipe())
-export class OrderProductController implements ICommonController<OrderProductEntity, CreateOrderProductDto, UpdateOrderProductDto> {
+@UseGuards(AuthGuard())
+@ApiBearerAuth()
+export class OrderProductController {
 
 	constructor(private readonly orderProductService: OrderProductService) { }
 
@@ -37,6 +41,7 @@ export class OrderProductController implements ICommonController<OrderProductEnt
 	@Patch('update/:id/:amount')
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Pedido de produto não encontrado' })
 	@ApiResponse({ status: HttpStatus.UNPROCESSABLE_ENTITY, description: 'Estoque insuficente de produto' })
+	// TODO Adicionar pipe para validar o amount
 	async update(@Param('id') id: number, @Param('amount') amount: number): Promise<UpdateResult> {
 		return await this.orderProductService.update(id, amount);
 	}

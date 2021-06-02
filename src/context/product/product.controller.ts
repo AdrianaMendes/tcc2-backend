@@ -1,7 +1,13 @@
-import { Controller, Post, Get, Param, Body, Patch, Delete, UsePipes, ValidationPipe, HttpStatus } from '@nestjs/common';
-import { ApiBody, ApiExcludeEndpoint, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DeleteResult, UpdateResult } from 'typeorm';
-import { ICommonControllerSoftDelete } from '../../shared/interface/common-controller-soft-delete.interface';
+
+import {
+	Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, UseGuards
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import {
+	ApiBearerAuth, ApiBody, ApiExcludeEndpoint, ApiOperation, ApiResponse, ApiTags
+} from '@nestjs/swagger';
+
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
@@ -9,8 +15,9 @@ import { ProductService } from './product.service';
 
 @Controller('product')
 @ApiTags('Produto')
-@UsePipes(new ValidationPipe())
-export class ProductController implements ICommonControllerSoftDelete<ProductEntity, CreateProductDto, UpdateProductDto> {
+@UseGuards(AuthGuard())
+@ApiBearerAuth()
+export class ProductController {
 
 	constructor(private readonly productService: ProductService) { }
 

@@ -1,14 +1,15 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from 'src/context/category/entities/category.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { ICommonServiceSoftDelete } from '../../shared/interface/common-service-soft-delete.interface';
+
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
 
 @Injectable()
-export class ProductService implements ICommonServiceSoftDelete<ProductEntity, CreateProductDto, UpdateProductDto> {
+export class ProductService {
 
 	constructor(
 		@InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>,

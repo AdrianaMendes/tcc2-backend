@@ -1,14 +1,14 @@
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpdateResult, DeleteResult, Repository } from 'typeorm';
-import { ICommonService } from '../../shared/interface/common-service.interface';
+
 import { ProductEntity } from '../product/entities/product.entity';
 import { CreateOrderProductDto } from './dto/create-order-product.dto';
-import { UpdateOrderProductDto } from './dto/update-order-product.dto';
 import { OrderProductEntity } from './entities/order-product.entity';
 
 @Injectable()
-export class OrderProductService implements ICommonService<OrderProductEntity, CreateOrderProductDto, UpdateOrderProductDto> {
+export class OrderProductService {
 
 	constructor(
 		@InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>,

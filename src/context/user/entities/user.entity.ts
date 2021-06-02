@@ -1,5 +1,8 @@
 import { EUserRole } from 'src/shared/enum/user-role.enum';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne } from 'typeorm';
+import {
+	Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn
+} from 'typeorm';
+
 import { AddressEntity } from './address.entity';
 
 @Entity('user')
@@ -19,10 +22,10 @@ export class UserEntity {
 	@Column({ name: 'full_name', type: 'varchar', length: 64 })
 	fullName: string;
 
-	@Column({ type: 'varchar', length: 64 })
+	@Column({ type: 'varchar', length: 64, unique: true })
 	email: string;
 
-	@Column({ type: 'varchar', length: 64 })
+	@Column()
 	password: string;
 
 	@Column({ nullable: true })

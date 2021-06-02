@@ -1,11 +1,13 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import * as dotenv from 'dotenv';
 import { CategoryEntity } from 'src/context/category/entities/category.entity';
 import { ProductEntity } from 'src/context/product/entities/product.entity';
-import * as dotenv from 'dotenv';
+
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { OrderProductEntity } from '../context/order-product/entities/order-product.entity';
-import { UserEntity } from '../context/user/entities/user.entity';
 import { AddressEntity } from '../context/user/entities/address.entity';
+import { UserEntity } from '../context/user/entities/user.entity';
 
 // TODO Melhorar o import do .ENV
 

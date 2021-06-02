@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
-import { OrderProductService } from './order-product.service';
-import { OrderProductController } from './order-product.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { OrderProductEntity } from './entities/order-product.entity';
+
+import { AuthModule } from '../../auth/auth.module';
 import { ProductEntity } from '../product/entities/product.entity';
+import { OrderProductEntity } from './entities/order-product.entity';
+import { OrderProductController } from './order-product.controller';
+import { OrderProductService } from './order-product.service';
 
 @Module({
 	controllers: [OrderProductController],
 	providers: [OrderProductService],
-	imports: [TypeOrmModule.forFeature([OrderProductEntity, ProductEntity])]
+	imports: [TypeOrmModule.forFeature([OrderProductEntity, ProductEntity]), AuthModule]
 })
 export class OrderProductModule { }

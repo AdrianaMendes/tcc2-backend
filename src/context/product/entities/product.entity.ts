@@ -1,5 +1,5 @@
 import { CategoryEntity } from 'src/context/category/entities/category.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('product')
 export class ProductEntity {
@@ -25,19 +25,10 @@ export class ProductEntity {
 	@Column({ name: 'is_active', default: true })
 	isActive: boolean;
 
-	@Column({ type: 'decimal', precision: 6, scale: 2, default: 0 })
+	@Column({ type: 'decimal', precision: 6, scale: 2 })
 	value: number;
 
 	toggleAvailability(): void {
 		this.isActive = !this.isActive;
-	}
-
-	constructor(name: string, description: string, image: string, amount: number, value: number) {
-		this.name = name;
-		this.description = description;
-		this.image = image;
-		this.amount = amount;
-		this.value = value;
-		this.isActive = true;
 	}
 }

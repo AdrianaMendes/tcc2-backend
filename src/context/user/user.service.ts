@@ -1,18 +1,26 @@
+import * as bcrypt from 'bcrypt';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpdateResult, DeleteResult, Repository } from 'typeorm';
-import { ICommonServiceSoftDelete } from '../../shared/interface/common-service-soft-delete.interface';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AddressEntity } from './entities/address.entity';
 import { UserEntity } from './entities/user.entity';
 
 @Injectable()
-export class UserService implements ICommonServiceSoftDelete<UserEntity, CreateUserDto, UpdateUserDto> {
-
-	constructor(@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>, @InjectRepository(AddressEntity) private addressRepository: Repository<AddressEntity>) { }
+export class UserService {
+	constructor(
+		@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
+		@InjectRepository(AddressEntity) private addressRepository: Repository<AddressEntity>) { }
 
 	async create(dto: CreateUserDto): Promise<UserEntity> {
+		const salt = await bcrypt.genSalt();
+		const hashedPassword = await bcrypt.hash(dto.password, salt);
+
+		dto.password = hashedPassword;
+
 		await this.addressRepository.save(dto.address);
 		return await this.userRepository.save(dto);
 	}
