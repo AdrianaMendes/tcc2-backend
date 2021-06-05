@@ -1,8 +1,6 @@
 import { EOrderStatus } from 'src/shared/enum/order-status.enum';
 import { EPaymentType } from 'src/shared/enum/payment-type.enum';
-import {
-	Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('order')
 export class Order {

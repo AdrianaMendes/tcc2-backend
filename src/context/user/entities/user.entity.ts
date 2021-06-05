@@ -1,6 +1,12 @@
 import { EUserRole } from 'src/shared/enum/user-role.enum';
 import {
-	Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn
+	Column,
+	CreateDateColumn,
+	Entity,
+	JoinColumn,
+	OneToOne,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn,
 } from 'typeorm';
 
 import { AddressEntity } from './address.entity';

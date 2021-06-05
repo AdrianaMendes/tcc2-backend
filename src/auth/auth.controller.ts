@@ -7,8 +7,7 @@ import { AuthService } from './auth.service';
 @Controller('auth')
 @ApiTags('Autenticação')
 export class AuthController {
-
-	constructor(private readonly authService: AuthService) { }
+	constructor(private readonly authService: AuthService) {}
 
 	@Post('sign-in')
 	@ApiBody({ type: LoginUserDto })

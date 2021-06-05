@@ -10,11 +10,10 @@ import { ProductEntity } from './entities/product.entity';
 
 @Injectable()
 export class ProductService {
-
 	constructor(
 		@InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>,
-		@InjectRepository(CategoryEntity) private categoryRepository: Repository<CategoryEntity>
-	) { }
+		@InjectRepository(CategoryEntity) private categoryRepository: Repository<CategoryEntity>,
+	) {}
 
 	async create(dto: CreateProductDto): Promise<ProductEntity> {
 		const category = await this.categoryRepository.findOne(dto.categoryId);
@@ -57,7 +56,10 @@ export class ProductService {
 	}
 
 	async findOneActive(id: number): Promise<ProductEntity> {
-		const product = await this.productRepository.findOne(id, { relations: ['category'], where: { isActive: true } });
+		const product = await this.productRepository.findOne(id, {
+			relations: ['category'],
+			where: { isActive: true },
+		});
 
 		if (!product) {
 			throw new HttpException(`Não há produto com id: ${id}`, HttpStatus.NOT_FOUND);

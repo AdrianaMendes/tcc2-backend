@@ -1,41 +1,44 @@
-import * as dotenv from 'dotenv';
-import { CategoryEntity } from 'src/context/category/entities/category.entity';
-import { ProductEntity } from 'src/context/product/entities/product.entity';
-
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
+import { CategoryEntity } from '../context/category/entities/category.entity';
 import { OrderProductEntity } from '../context/order-product/entities/order-product.entity';
+import { ProductEntity } from '../context/product/entities/product.entity';
 import { AddressEntity } from '../context/user/entities/address.entity';
 import { UserEntity } from '../context/user/entities/user.entity';
-
-// TODO Melhorar o import do .ENV
-
-dotenv.config();
-
-let objDatabaseCloud = null;
-
-if (process.env.DATABASE_URL) {
-	objDatabaseCloud = {
-		url: process.env.DATABASE_URL,
-		ssl: {
-			rejectUnauthorized: false,
-		}
-	};
-}
-
-const objEnv = {
-	type: 'postgres',
-	host: process.env.DATABASE_HOST || 'localhost',
-	port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
-	username: process.env.DATABASE_USER || 'postgres',
-	password: process.env.DATABASE_PASSWORD || '1234',
-	database: process.env.DATABASE || 'postgres',
-	entities: [CategoryEntity, ProductEntity, OrderProductEntity, UserEntity, AddressEntity],
-	synchronize: true,
-};
+import { IEnvironmentVariables } from '../shared/interface/environment-variables.interface';
 
 @Module({
-	imports: [TypeOrmModule.forRoot({ ...objEnv, ...objDatabaseCloud })]
+	imports: [
+		TypeOrmModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: async (configService: ConfigService<IEnvironmentVariables>) => {
+				const DB = {
+					type: 'postgres',
+					host: configService.get('DB_HOST'),
+					port: configService.get('DB_PORT'),
+					database: configService.get('DB_NAME'),
+					username: configService.get('DB_USERNAME'),
+					password: configService.get('DB_PASSWORD'),
+					entities: [CategoryEntity, ProductEntity, OrderProductEntity, UserEntity, AddressEntity],
+					synchronize: configService.get('DB_SYNCHRONIZE'),
+				};
+
+				if (configService.get('DATABASE_URL') !== '') {
+					const DB_CLOUD_CONNECTION = {
+						url: configService.get('DATABASE_URL'),
+						ssl: {
+							rejectUnauthorized: configService.get('DB_SSL_REJECT_UNAUTHORIZED'),
+						},
+					};
+					return { ...DB, ...DB_CLOUD_CONNECTION } as TypeOrmModuleOptions;
+				} else {
+					return { ...DB } as TypeOrmModuleOptions;
+				}
+			},
+		}),
+	],
 })
-export class DatabaseModule { }
+export class DatabaseModule {}

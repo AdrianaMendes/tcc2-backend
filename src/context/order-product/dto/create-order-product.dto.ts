@@ -3,7 +3,6 @@ import { IsPositive, Max } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateOrderProductDto {
-
 	/* TODO Habilitar o relacionamento do Order
 	order: Order;
 	*/

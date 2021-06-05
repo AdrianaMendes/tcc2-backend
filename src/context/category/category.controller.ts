@@ -1,11 +1,12 @@
 import { DeleteResult, UpdateResult } from 'typeorm';
 
-import {
-	Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, UseGuards
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiExcludeEndpoint, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+import { HasRoles } from '../../auth/decorator/has-roles.decorator';
+import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
+import { RolesGuard } from '../../auth/guard/roles.guard';
+import { EUserRole } from '../../shared/enum/user-role.enum';
 import { ProductEntity } from '../product/entities/product.entity';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -14,13 +15,13 @@ import { CategoryEntity } from './entities/category.entity';
 
 @Controller('category')
 @ApiTags('Categoria')
-@UseGuards(AuthGuard())
-@ApiBearerAuth()
 export class CategoryController {
-
-	constructor(private readonly categoryService: CategoryService) { }
+	constructor(private readonly categoryService: CategoryService) {}
 
 	@Post('create')
+	@HasRoles(EUserRole.ADMIN)
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@ApiBearerAuth()
 	@ApiBody({ type: CreateCategoryDto })
 	@ApiResponse({ status: HttpStatus.CREATED, description: 'Categoria criado' })
 	async create(@Body() dto: CreateCategoryDto): Promise<CategoryEntity> {
@@ -40,6 +41,9 @@ export class CategoryController {
 	}
 
 	@Get('findAllProduct/:id')
+	@HasRoles(EUserRole.ADMIN)
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@ApiBearerAuth()
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Categoria não encontrada' })
 	@ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Não há produto cadastrado com a categoria' })
 	async findAllProduct(@Param('id') id: number): Promise<ProductEntity[]> {
@@ -55,12 +59,18 @@ export class CategoryController {
 
 	@Patch('update/:id')
 	@ApiBody({ type: UpdateCategoryDto })
+	@HasRoles(EUserRole.ADMIN)
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@ApiBearerAuth()
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Categoria não encontrada' })
 	async update(@Param('id') id: number, @Body() dto: UpdateCategoryDto): Promise<UpdateResult> {
 		return await this.categoryService.update(id, dto);
 	}
 
 	@Delete('remove/:id')
+	@HasRoles(EUserRole.ADMIN)
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@ApiBearerAuth()
 	@ApiExcludeEndpoint()
 	async remove(@Param('id') id: number): Promise<DeleteResult> {
 		return await this.categoryService.remove(id);

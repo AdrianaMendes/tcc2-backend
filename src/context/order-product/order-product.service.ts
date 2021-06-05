@@ -1,6 +1,6 @@
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { ProductEntity } from '../product/entities/product.entity';
@@ -9,11 +9,10 @@ import { OrderProductEntity } from './entities/order-product.entity';
 
 @Injectable()
 export class OrderProductService {
-
 	constructor(
 		@InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>,
 		@InjectRepository(OrderProductEntity) private orderProductRepository: Repository<OrderProductEntity>,
-	) { }
+	) {}
 
 	async create(dto: CreateOrderProductDto): Promise<OrderProductEntity> {
 		const product = await this.productRepository.findOne(dto.productId, { where: { isActive: true } });
@@ -54,6 +53,10 @@ export class OrderProductService {
 	}
 
 	async update(id: number, amount: number): Promise<UpdateResult> {
+		if (amount <= 0) {
+			throw new BadRequestException(`A quantidade não pode ser menor ou igual a 0. Valor informado: ${amount}`);
+		}
+
 		const orderProduct = await this.orderProductRepository.findOne(id, { relations: ['product'] });
 
 		if (!orderProduct) {

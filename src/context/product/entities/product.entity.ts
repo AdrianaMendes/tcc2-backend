@@ -6,7 +6,7 @@ export class ProductEntity {
 	@PrimaryGeneratedColumn({ type: 'smallint' })
 	id: number;
 
-	@ManyToOne(() => CategoryEntity, category => category.productArr, { onDelete: 'CASCADE' })
+	@ManyToOne(() => CategoryEntity, (category) => category.productArr, { onDelete: 'CASCADE' })
 	@JoinColumn({ name: 'category_id' })
 	category: CategoryEntity;
 

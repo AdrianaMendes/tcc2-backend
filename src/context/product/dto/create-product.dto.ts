@@ -3,7 +3,6 @@ import { IsPositive, Length, Max, MaxLength, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProductDto {
-
 	@ApiProperty({ description: 'Id da categoria' })
 	@IsPositive()
 	readonly categoryId: number;

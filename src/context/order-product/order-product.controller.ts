@@ -1,10 +1,7 @@
 import { DeleteResult, UpdateResult } from 'typeorm';
 
-import {
-	Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, UseGuards
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { CreateOrderProductDto } from './dto/create-order-product.dto';
 import { OrderProductEntity } from './entities/order-product.entity';
@@ -12,11 +9,8 @@ import { OrderProductService } from './order-product.service';
 
 @Controller('order-product')
 @ApiTags('Pedido do produto')
-@UseGuards(AuthGuard())
-@ApiBearerAuth()
 export class OrderProductController {
-
-	constructor(private readonly orderProductService: OrderProductService) { }
+	constructor(private readonly orderProductService: OrderProductService) {}
 
 	@Post('/create')
 	@ApiBody({ type: CreateOrderProductDto })
@@ -41,7 +35,6 @@ export class OrderProductController {
 	@Patch('update/:id/:amount')
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Pedido de produto não encontrado' })
 	@ApiResponse({ status: HttpStatus.UNPROCESSABLE_ENTITY, description: 'Estoque insuficente de produto' })
-	// TODO Adicionar pipe para validar o amount
 	async update(@Param('id') id: number, @Param('amount') amount: number): Promise<UpdateResult> {
 		return await this.orderProductService.update(id, amount);
 	}

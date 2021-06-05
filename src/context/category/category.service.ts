@@ -10,11 +10,10 @@ import { CategoryEntity } from './entities/category.entity';
 
 @Injectable()
 export class CategoryService {
-
 	constructor(
 		@InjectRepository(CategoryEntity) private categoryRepository: Repository<CategoryEntity>,
-		@InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>) {
-	}
+		@InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>,
+	) {}
 
 	async create(dto: CreateCategoryDto): Promise<CategoryEntity> {
 		return await this.categoryRepository.save(dto);
