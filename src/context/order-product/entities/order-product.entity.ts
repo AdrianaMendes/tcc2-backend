@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+import { OrderEntity } from '../../order/entities/order.entity';
 import { ProductEntity } from '../../product/entities/product.entity';
 
 @Entity('order_product')
@@ -7,10 +8,9 @@ export class OrderProductEntity {
 	@PrimaryGeneratedColumn({ type: 'smallint' })
 	id: number;
 
-	/* TODO Habilitar o relacionamento do Order
-	@ManyToOne(() => Order, order => order.orderProductArr)
-	order: Order;
-	*/
+	@ManyToOne(() => OrderEntity, (order) => order.orderProductArr)
+	@JoinColumn({ name: 'order_id' })
+	order: OrderEntity;
 
 	@ManyToOne(() => ProductEntity, { cascade: true })
 	@JoinColumn({ name: 'product_id' })
@@ -21,12 +21,4 @@ export class OrderProductEntity {
 
 	@Column({ name: 'original_product_value', type: 'decimal', precision: 6, scale: 2, default: 0 })
 	originalProductValue: number;
-
-	totalValue(): number {
-		return this.amount * this.originalProductValue;
-	}
-
-	constructor(amount: number) {
-		this.amount = amount;
-	}
 }

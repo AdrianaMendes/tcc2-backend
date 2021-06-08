@@ -39,30 +39,16 @@ export class CategoryService {
 		return category;
 	}
 
-	async findAllProduct(id: number): Promise<ProductEntity[]> {
+	async findAllProduct(id: number, isActive: boolean): Promise<ProductEntity[]> {
 		const category = await this.categoryRepository.findOne(id);
 
 		if (!category) {
 			throw new HttpException(`Não há categoria com id: ${id}`, HttpStatus.NOT_FOUND);
 		}
 
-		const productArr = await this.productRepository.find({ where: { category: id } });
-
-		if (productArr.length === 0) {
-			throw new HttpException(`Não há produto cadastrado com a categoria de id: ${id}`, HttpStatus.NO_CONTENT);
-		}
-
-		return productArr;
-	}
-
-	async findAllProductActive(id: number): Promise<ProductEntity[]> {
-		const category = await this.categoryRepository.findOne(id);
-
-		if (!category) {
-			throw new HttpException(`Não há categoria com id: ${id}`, HttpStatus.NOT_FOUND);
-		}
-
-		const productArr = await this.productRepository.find({ where: { category: id, isActive: true } });
+		const productArr = isActive
+			? await this.productRepository.find({ where: { category: id, isActive: true } })
+			: await this.productRepository.find({ where: { category: id } });
 
 		if (productArr.length === 0) {
 			throw new HttpException(`Não há produto cadastrado com a categoria de id: ${id}`, HttpStatus.NO_CONTENT);

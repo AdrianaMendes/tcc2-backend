@@ -47,14 +47,14 @@ export class CategoryController {
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Categoria não encontrada' })
 	@ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Não há produto cadastrado com a categoria' })
 	async findAllProduct(@Param('id') id: number): Promise<ProductEntity[]> {
-		return await this.categoryService.findAllProduct(id);
+		return await this.categoryService.findAllProduct(id, false);
 	}
 
 	@Get('findAllProductActive/:id')
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Categoria não encontrada' })
 	@ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Não há produto cadastrado com a categoria' })
 	async findAllProductActive(@Param('id') id: number): Promise<ProductEntity[]> {
-		return await this.categoryService.findAllProductActive(id);
+		return await this.categoryService.findAllProduct(id, true);
 	}
 
 	@Patch('update/:id')

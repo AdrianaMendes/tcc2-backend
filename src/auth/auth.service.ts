@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -25,7 +25,7 @@ export class AuthService {
 			const accessToken = this.jwtService.sign(payload);
 			return { accessToken };
 		} else {
-			throw new UnauthorizedException('Usuário ou senha inválido');
+			throw new HttpException('Usuário ou senha inválido', HttpStatus.UNAUTHORIZED);
 		}
 	}
 }

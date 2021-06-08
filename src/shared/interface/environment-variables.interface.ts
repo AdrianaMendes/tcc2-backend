@@ -12,4 +12,5 @@ export interface IEnvironmentVariables {
 	PORT: number;
 	SWAGGER_USERNAME: string;
 	SWAGGER_PASSWORD: string;
+	NPM_CONFIG_PRODUCTION?: boolean;
 }

@@ -34,7 +34,7 @@ export class ProductController {
 	@ApiBearerAuth()
 	@ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Não há produto cadastrado' })
 	async findAll(): Promise<ProductEntity[]> {
-		return await this.productService.findAll();
+		return await this.productService.findAll(false);
 	}
 
 	@Get('findAllActive')
@@ -43,7 +43,7 @@ export class ProductController {
 		description: 'Endpoint utilizado para listar todos produtos ativos. Usado apenas pelo usuário final.',
 	})
 	async findAllActive(): Promise<ProductEntity[]> {
-		return await this.productService.findAllActive();
+		return await this.productService.findAll(true);
 	}
 
 	@Get('findOne/:id')
@@ -52,7 +52,7 @@ export class ProductController {
 	@ApiBearerAuth()
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Produto não encontrado' })
 	async findOne(@Param('id') id: number): Promise<ProductEntity> {
-		return await this.productService.findOne(id);
+		return await this.productService.findOne(id, false);
 	}
 
 	@Get('findOneActive/:id')
@@ -61,7 +61,7 @@ export class ProductController {
 	})
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Produto não encontrado' })
 	async findOneActive(@Param('id') id: number): Promise<ProductEntity> {
-		return await this.productService.findOneActive(id);
+		return await this.productService.findOne(id, true);
 	}
 
 	@Patch('update/:id')

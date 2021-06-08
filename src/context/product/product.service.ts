@@ -25,8 +25,10 @@ export class ProductService {
 		return await this.productRepository.save({ ...dto, category });
 	}
 
-	async findAll(): Promise<ProductEntity[]> {
-		const productArr = await this.productRepository.find({ relations: ['category'] });
+	async findAll(isActive: boolean): Promise<ProductEntity[]> {
+		const productArr = isActive
+			? await this.productRepository.find({ relations: ['category'], where: { isActive: true } })
+			: await this.productRepository.find({ relations: ['category'] });
 
 		if (productArr.length === 0) {
 			throw new HttpException('Não há produto cadastrado', HttpStatus.NO_CONTENT);
@@ -35,31 +37,10 @@ export class ProductService {
 		return productArr;
 	}
 
-	async findAllActive(): Promise<ProductEntity[]> {
-		const productArr = await this.productRepository.find({ relations: ['category'], where: { isActive: true } });
-
-		if (productArr.length === 0) {
-			throw new HttpException('Não há produto cadastrado', HttpStatus.NO_CONTENT);
-		}
-
-		return productArr;
-	}
-
-	async findOne(id: number): Promise<ProductEntity> {
-		const product = await this.productRepository.findOne(id, { relations: ['category'] });
-
-		if (!product) {
-			throw new HttpException(`Não há produto com id: ${id}`, HttpStatus.NOT_FOUND);
-		}
-
-		return product;
-	}
-
-	async findOneActive(id: number): Promise<ProductEntity> {
-		const product = await this.productRepository.findOne(id, {
-			relations: ['category'],
-			where: { isActive: true },
-		});
+	async findOne(id: number, isActive: boolean): Promise<ProductEntity> {
+		const product = isActive
+			? await this.productRepository.findOne(id, { relations: ['category'], where: { isActive: true } })
+			: await this.productRepository.findOne(id, { relations: ['category'] });
 
 		if (!product) {
 			throw new HttpException(`Não há produto com id: ${id}`, HttpStatus.NOT_FOUND);

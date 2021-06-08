@@ -22,12 +22,18 @@ export class UserService {
 
 		dto.password = hashedPassword;
 
+		if ((await this.userRepository.find({ where: { email: dto.email } })).length !== 0) {
+			throw new HttpException(`Usuário com email: ${dto.email} já está cadastrado`, HttpStatus.CONFLICT);
+		}
+
 		await this.addressRepository.save(dto.address);
 		return await this.userRepository.save(dto);
 	}
 
-	async findAll(): Promise<UserEntity[]> {
-		const userArr = await this.userRepository.find({ relations: ['address'] });
+	async findAll(isActive: boolean): Promise<UserEntity[]> {
+		const userArr = isActive
+			? await this.userRepository.find({ relations: ['address'], where: { isActive: true } })
+			: await this.userRepository.find({ relations: ['address'] });
 
 		if (userArr.length === 0) {
 			throw new HttpException('Não há usuário cadastrado', HttpStatus.NO_CONTENT);
@@ -36,28 +42,10 @@ export class UserService {
 		return userArr;
 	}
 
-	async findAllActive(): Promise<UserEntity[]> {
-		const userArr = await this.userRepository.find({ relations: ['address'], where: { isActive: true } });
-
-		if (userArr.length === 0) {
-			throw new HttpException('Não há usuário cadastrado', HttpStatus.NO_CONTENT);
-		}
-
-		return userArr;
-	}
-
-	async findOne(id: number): Promise<UserEntity> {
-		const user = await this.userRepository.findOne(id, { relations: ['address'] });
-
-		if (!user) {
-			throw new HttpException(`Não há usuário com id: ${id}`, HttpStatus.NOT_FOUND);
-		}
-
-		return user;
-	}
-
-	async findOneActive(id: number): Promise<UserEntity> {
-		const user = await this.userRepository.findOne(id, { relations: ['address'], where: { isActive: true } });
+	async findOne(id: number, isActive: boolean): Promise<UserEntity> {
+		const user = isActive
+			? await this.userRepository.findOne(id, { relations: ['address'], where: { isActive: true } })
+			: await this.userRepository.findOne(id, { relations: ['address'] });
 
 		if (!user) {
 			throw new HttpException(`Não há usuário com id: ${id}`, HttpStatus.NOT_FOUND);

@@ -4,11 +4,13 @@ import {
 	CreateDateColumn,
 	Entity,
 	JoinColumn,
+	OneToMany,
 	OneToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
 
+import { OrderEntity } from '../../order/entities/order.entity';
 import { AddressEntity } from './address.entity';
 
 @Entity('user')
@@ -20,10 +22,8 @@ export class UserEntity {
 	@JoinColumn({ name: 'address_id' })
 	address: AddressEntity;
 
-	/*
-	@OneToMany(() => Order, order => order.user)
-	orderArr?: Order[];
-	*/
+	@OneToMany(() => OrderEntity, (order) => order.user, { nullable: true })
+	orderArr?: OrderEntity[];
 
 	@Column({ name: 'full_name', type: 'varchar', length: 64 })
 	fullName: string;

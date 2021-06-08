@@ -2,11 +2,7 @@ import { IsPositive, Max } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateOrderProductDto {
-	@ApiProperty({ description: 'Id do pedido', default: '1' })
-	@IsPositive()
-	orderId: number;
-
+export class CreateOrderItemDto {
 	@ApiProperty({ description: 'Id do produto', default: '1' })
 	@IsPositive()
 	readonly productId: number;

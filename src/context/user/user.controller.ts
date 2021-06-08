@@ -30,7 +30,7 @@ export class UserController {
 	@ApiBearerAuth()
 	@ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Não há usuário cadastrado' })
 	async findAll(): Promise<UserEntity[]> {
-		return await this.userService.findAll();
+		return await this.userService.findAll(false);
 	}
 
 	@Get('findAllActive')
@@ -40,7 +40,7 @@ export class UserController {
 	@ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Não há usuário cadastrado' })
 	@ApiOperation({ description: 'Endpoint utilizado para listar todos usuários ativos.' })
 	async findAllActive(): Promise<UserEntity[]> {
-		return await this.userService.findAllActive();
+		return await this.userService.findAll(true);
 	}
 
 	@Get('findOne/:id')
@@ -49,7 +49,7 @@ export class UserController {
 	@ApiBearerAuth()
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Usuário não encontrado' })
 	async findOne(@Param('id') id: number): Promise<UserEntity> {
-		return await this.userService.findOne(id);
+		return await this.userService.findOne(id, false);
 	}
 
 	@Get('findOneActive/:id')
@@ -59,7 +59,7 @@ export class UserController {
 	@ApiOperation({ description: 'Endpoint utilizado para consultar apenas usuários ativos.' })
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Usuário não encontrado' })
 	async findOneActive(@Param('id') id: number): Promise<UserEntity> {
-		return await this.userService.findOneActive(id);
+		return await this.userService.findOne(id, true);
 	}
 
 	@Patch('update/:id')

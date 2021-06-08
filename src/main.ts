@@ -27,6 +27,7 @@ async function bootstrap(): Promise<void> {
 			filter: true,
 			showRequestDuration: true,
 			docExpansion: 'none',
+			tagsSorter: 'alpha',
 		},
 	};
 	SwaggerModule.setup('api', app, document, customOptions);

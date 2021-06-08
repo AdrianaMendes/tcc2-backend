@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { configValidationSchema } from './config/config.schema';
 import { CategoryModule } from './context/category/category.module';
 import { OrderProductModule } from './context/order-product/order-product.module';
+import { OrderModule } from './context/order/order.module';
 import { ProductModule } from './context/product/product.module';
 import { AddressEntity } from './context/user/entities/address.entity';
 import { UserModule } from './context/user/user.module';
@@ -22,6 +23,7 @@ import { DatabaseModule } from './database/database.module';
 		UserModule,
 		AddressEntity,
 		AuthModule,
+		OrderModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
