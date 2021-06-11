@@ -16,5 +16,5 @@ export const configValidationSchema = Joi.object<IEnvironmentVariables>({
 	PORT: Joi.number().default(3000),
 	SWAGGER_USERNAME: Joi.string().default('admin'),
 	SWAGGER_PASSWORD: Joi.string().default('admin'),
-	NPM_CONFIG_PRODUCTION: Joi.bool().default(false),
+	NPM_CONFIG_PRODUCTION: Joi.bool().default(false)
 });

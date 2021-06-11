@@ -5,7 +5,7 @@ import {
 	HttpException,
 	HttpStatus,
 	Inject,
-	Injectable,
+	Injectable
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
@@ -15,7 +15,7 @@ import { UserService } from '../../context/user/user.service';
 export class RolesGuard implements CanActivate {
 	constructor(
 		private reflector: Reflector,
-		@Inject(forwardRef(() => UserService)) private userService: UserService,
+		@Inject(forwardRef(() => UserService)) private userService: UserService
 	) {}
 
 	canActivate(context: ExecutionContext): boolean {

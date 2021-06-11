@@ -40,7 +40,7 @@ export class ProductController {
 	@Get('findAllActive')
 	@ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Não há produto cadastrado' })
 	@ApiOperation({
-		description: 'Endpoint utilizado para listar todos produtos ativos. Usado apenas pelo usuário final.',
+		description: 'Endpoint utilizado para listar todos produtos ativos. Usado apenas pelo usuário final.'
 	})
 	async findAllActive(): Promise<ProductEntity[]> {
 		return await this.productService.findAll(true);
@@ -57,7 +57,7 @@ export class ProductController {
 
 	@Get('findOneActive/:id')
 	@ApiOperation({
-		description: 'Endpoint utilizado para consultar apenas produtos ativos. Usado apenas pelo usuário final.',
+		description: 'Endpoint utilizado para consultar apenas produtos ativos. Usado apenas pelo usuário final.'
 	})
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Produto não encontrado' })
 	async findOneActive(@Param('id') id: number): Promise<ProductEntity> {

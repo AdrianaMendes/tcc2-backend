@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import { CategoryEntity } from '../context/category/entities/category.entity';
-import { OrderProductEntity } from '../context/order-product/entities/order-product.entity';
+import { OrderProductEntity } from '../context/order/entities/order-product.entity';
 import { OrderEntity } from '../context/order/entities/order.entity';
 import { ProductEntity } from '../context/product/entities/product.entity';
 import { AddressEntity } from '../context/user/entities/address.entity';
@@ -29,24 +29,24 @@ import { IEnvironmentVariables } from '../shared/interface/environment-variables
 						OrderProductEntity,
 						UserEntity,
 						AddressEntity,
-						OrderEntity,
+						OrderEntity
 					],
-					synchronize: configService.get('DB_SYNCHRONIZE'),
+					synchronize: configService.get('DB_SYNCHRONIZE')
 				};
 
 				if (configService.get('DATABASE_URL') !== '') {
 					const DB_CLOUD_CONNECTION = {
 						url: configService.get('DATABASE_URL'),
 						ssl: {
-							rejectUnauthorized: configService.get('DB_SSL_REJECT_UNAUTHORIZED'),
-						},
+							rejectUnauthorized: configService.get('DB_SSL_REJECT_UNAUTHORIZED')
+						}
 					};
 					return { ...DB, ...DB_CLOUD_CONNECTION } as TypeOrmModuleOptions;
 				} else {
 					return { ...DB } as TypeOrmModuleOptions;
 				}
-			},
-		}),
-	],
+			}
+		})
+	]
 })
 export class DatabaseModule {}

@@ -1,14 +1,14 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { OrderEntity } from '../../order/entities/order.entity';
 import { ProductEntity } from '../../product/entities/product.entity';
+import { OrderEntity } from './order.entity';
 
 @Entity('order_product')
 export class OrderProductEntity {
 	@PrimaryGeneratedColumn({ type: 'smallint' })
 	id: number;
 
-	@ManyToOne(() => OrderEntity, (order) => order.orderProductArr)
+	@ManyToOne(() => OrderEntity, order => order.orderProductArr, { onDelete: 'CASCADE' })
 	@JoinColumn({ name: 'order_id' })
 	order: OrderEntity;
 

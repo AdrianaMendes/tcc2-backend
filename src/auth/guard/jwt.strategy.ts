@@ -14,11 +14,11 @@ import { IJwtPayload } from '../../shared/interface/jwt-payload.interface';
 export class JwtStrategy extends PassportStrategy(Strategy) {
 	constructor(
 		@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
-		private configService: ConfigService<IEnvironmentVariables>,
+		private configService: ConfigService<IEnvironmentVariables>
 	) {
 		super({
 			secretOrKey: configService.get('JWT_SECRET'),
-			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
 		});
 	}
 

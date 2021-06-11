@@ -13,7 +13,7 @@ import { IJwtPayload } from '../shared/interface/jwt-payload.interface';
 export class AuthService {
 	constructor(
 		@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
-		private jwtService: JwtService,
+		private jwtService: JwtService
 	) {}
 
 	async signIn(dto: LoginUserDto): Promise<{ accessToken: string }> {

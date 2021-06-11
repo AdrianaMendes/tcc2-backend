@@ -1,6 +1,7 @@
 export enum EPaymentType {
-	CASH = '0',
-	DEBIT = '1',
-	CREDIT_CARD = '2',
-	PIX = '3',
+	NOT_INFORMED = '0',
+	CASH = '1',
+	DEBIT = '2',
+	CREDIT_CARD = '3',
+	PIX = '4'
 }

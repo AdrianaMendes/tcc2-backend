@@ -23,14 +23,14 @@ import { RolesGuard } from './guard/roles.guard';
 			useFactory: async (configService: ConfigService) => ({
 				secret: configService.get('JWT_SECRET'),
 				signOptions: {
-					expiresIn: configService.get('EXPIRATION_TIME_SESSION'),
-				},
-			}),
+					expiresIn: configService.get('EXPIRATION_TIME_SESSION')
+				}
+			})
 		}),
-		TypeOrmModule.forFeature([UserEntity]),
+		TypeOrmModule.forFeature([UserEntity])
 	],
 	providers: [AuthService, JwtStrategy, RolesGuard, JwtAuthGuard],
 	exports: [JwtStrategy, PassportModule],
-	controllers: [AuthController],
+	controllers: [AuthController]
 })
 export class AuthModule {}

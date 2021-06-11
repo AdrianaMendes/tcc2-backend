@@ -16,8 +16,8 @@ async function bootstrap(): Promise<void> {
 		['/api', '/api-json'],
 		basicAuth({
 			challenge: true,
-			users: { [configService.get('SWAGGER_USERNAME')]: configService.get('SWAGGER_PASSWORD') },
-		}),
+			users: { [configService.get('SWAGGER_USERNAME')]: configService.get('SWAGGER_PASSWORD') }
+		})
 	);
 	const config = new DocumentBuilder().setTitle('Backend APP').setVersion('1.0').addBearerAuth().build();
 	const options: SwaggerDocumentOptions = {};
@@ -27,11 +27,12 @@ async function bootstrap(): Promise<void> {
 			filter: true,
 			showRequestDuration: true,
 			docExpansion: 'none',
-			tagsSorter: 'alpha',
-		},
+			tagsSorter: 'alpha'
+		}
 	};
 	SwaggerModule.setup('api', app, document, customOptions);
 	app.useGlobalPipes(new ValidationPipe());
+	app.enableCors();
 	await app.listen(configService.get('PORT'));
 	logger.log('Backend inicializado');
 }

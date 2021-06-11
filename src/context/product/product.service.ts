@@ -12,7 +12,7 @@ import { ProductEntity } from './entities/product.entity';
 export class ProductService {
 	constructor(
 		@InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>,
-		@InjectRepository(CategoryEntity) private categoryRepository: Repository<CategoryEntity>,
+		@InjectRepository(CategoryEntity) private categoryRepository: Repository<CategoryEntity>
 	) {}
 
 	async create(dto: CreateProductDto): Promise<ProductEntity> {

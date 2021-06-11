@@ -6,7 +6,7 @@ export class CategoryEntity {
 	@PrimaryGeneratedColumn({ type: 'smallint' })
 	id: number;
 
-	@OneToMany(() => ProductEntity, (productArr) => productArr.category, { cascade: true })
+	@OneToMany(() => ProductEntity, productArr => productArr.category, { cascade: true })
 	productArr: ProductEntity[];
 
 	@Column({ type: 'varchar', length: 64 })

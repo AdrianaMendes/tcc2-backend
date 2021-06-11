@@ -3,7 +3,9 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
+import { GetUser } from '../../auth/decorator/get-user.decorator';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
+import { UserEntity } from '../user/entities/user.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderEntity } from './entities/order.entity';
 import { OrderService } from './order.service';
@@ -17,8 +19,8 @@ export class OrderController {
 	@ApiBody({ type: CreateOrderDto })
 	@UseGuards(JwtAuthGuard)
 	@ApiBearerAuth()
-	async create(@Body() dto: CreateOrderDto): Promise<UpdateResult> {
-		return await this.orderService.openOrder(dto);
+	async create(@Body() dto: CreateOrderDto, @GetUser() user: UserEntity): Promise<UpdateResult> {
+		return await this.orderService.openOrder(dto, user);
 	}
 
 	@Get('findAll')

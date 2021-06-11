@@ -13,6 +13,6 @@ import { ProductService } from './product.service';
 @Module({
 	controllers: [ProductController],
 	providers: [ProductService, UserService],
-	imports: [TypeOrmModule.forFeature([CategoryEntity, ProductEntity, UserEntity, AddressEntity])],
+	imports: [TypeOrmModule.forFeature([CategoryEntity, ProductEntity, UserEntity, AddressEntity])]
 })
 export class ProductModule {}

@@ -9,7 +9,7 @@ describe('CategoryController', () => {
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			controllers: [CategoryController],
-			providers: [CategoryService],
+			providers: [CategoryService]
 		}).compile();
 
 		controller = module.get<CategoryController>(CategoryController);

@@ -8,31 +8,31 @@ import {
 	ManyToOne,
 	OneToMany,
 	PrimaryGeneratedColumn,
-	UpdateDateColumn,
+	UpdateDateColumn
 } from 'typeorm';
 
-import { OrderProductEntity } from '../../order-product/entities/order-product.entity';
 import { UserEntity } from '../../user/entities/user.entity';
+import { OrderProductEntity } from './order-product.entity';
 
 @Entity('order')
 export class OrderEntity {
-	@PrimaryGeneratedColumn()
+	@PrimaryGeneratedColumn({ type: 'smallint' })
 	id: number;
 
-	@ManyToOne(() => UserEntity, (user) => user.orderArr, { nullable: false })
+	@ManyToOne(() => UserEntity, user => user.orderArr, { nullable: false })
 	@JoinColumn({ name: 'user_id' })
 	user: UserEntity;
 
-	@OneToMany(() => OrderProductEntity, (orderProductArr) => orderProductArr.order)
+	@OneToMany(() => OrderProductEntity, orderProductArr => orderProductArr.order, { nullable: true, cascade: true })
 	orderProductArr: OrderProductEntity[];
 
-	@Column({ name: 'payment_type', type: 'enum', enum: EPaymentType })
+	@Column({ name: 'payment_type', type: 'enum', enum: EPaymentType, default: EPaymentType.NOT_INFORMED })
 	paymentType: EPaymentType;
 
 	@Column({ type: 'enum', enum: EOrderStatus, default: EOrderStatus.OPEN })
 	status: EOrderStatus;
 
-	@Column({ name: 'total_value', type: 'decimal', precision: 6, scale: 2 })
+	@Column({ name: 'total_value', type: 'decimal', precision: 6, scale: 2, default: 0 })
 	totalValue: number;
 
 	@CreateDateColumn({ name: 'creation_date' })

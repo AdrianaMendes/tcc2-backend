@@ -7,7 +7,7 @@ import {
 	OneToMany,
 	OneToOne,
 	PrimaryGeneratedColumn,
-	UpdateDateColumn,
+	UpdateDateColumn
 } from 'typeorm';
 
 import { OrderEntity } from '../../order/entities/order.entity';
@@ -22,7 +22,7 @@ export class UserEntity {
 	@JoinColumn({ name: 'address_id' })
 	address: AddressEntity;
 
-	@OneToMany(() => OrderEntity, (order) => order.user, { nullable: true })
+	@OneToMany(() => OrderEntity, order => order.user, { nullable: true })
 	orderArr?: OrderEntity[];
 
 	@Column({ name: 'full_name', type: 'varchar', length: 64 })
