@@ -20,6 +20,11 @@ export class UserController {
 	@Post('create')
 	@ApiBody({ type: CreateUserDto })
 	@ApiResponse({ status: HttpStatus.CREATED, description: 'Usuário criado' })
+	@ApiResponse({ status: HttpStatus.CONFLICT, description: 'Email já está sendo usado por outro usuário' })
+	@ApiResponse({
+		status: HttpStatus.BAD_REQUEST,
+		description: 'Erro na criação do usuário, formulário com dados inválidos'
+	})
 	async create(@Body() dto: CreateUserDto): Promise<UserEntity> {
 		return await this.userService.create(dto);
 	}
@@ -75,7 +80,7 @@ export class UserController {
 	@HasRoles(EUserRole.ADMIN)
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@ApiBearerAuth()
-	@ApiOperation({ description: 'Endpoint utilizado para efetuar exclusão lógica.' })
+	@ApiOperation({ description: 'Endpoint utilizado para efetuar exclusão lógica' })
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Usuário não encontrado' })
 	async toggleAvailability(@Param('id') id: number): Promise<UserEntity> {
 		return await this.userService.toggleAvailability(id);
