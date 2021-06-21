@@ -1,4 +1,4 @@
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -74,7 +74,9 @@ export class OrderService {
 	}
 
 	async findAll(): Promise<OrderEntity[]> {
-		const orderArr = await this.orderRepository.find({ relations: ['orderProductArr', 'orderProductArr.product'] });
+		const orderArr = await this.orderRepository.find({
+			relations: ['user', 'orderProductArr', 'orderProductArr.product', 'orderProductArr.product.category']
+		});
 
 		if (orderArr.length === 0) {
 			throw new HttpException('Não há pedido cadastrado', HttpStatus.NO_CONTENT);
@@ -93,8 +95,8 @@ export class OrderService {
 		return order;
 	}
 
-	async remove(id: number): Promise<DeleteResult> {
-		return await this.orderRepository.delete(id);
+	async remove(id: number): Promise<boolean> {
+		return (await this.orderRepository.delete(id)).affected !== 0;
 	}
 
 	private async createOrderProduct(

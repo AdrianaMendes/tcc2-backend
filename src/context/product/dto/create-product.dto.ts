@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateProductDto {
 	@ApiProperty({ description: 'Id da categoria' })
 	@IsPositive()
-	readonly categoryId: number;
+	categoryId: number;
 
 	@ApiProperty({ minLength: 1, maxLength: 64, default: 'Nome do produto' })
 	@Length(1, 64)

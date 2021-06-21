@@ -4,6 +4,8 @@ import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { IAddress } from '../../shared/interface/address.interface';
+import { IUser } from '../../shared/interface/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AddressEntity } from './entities/address.entity';
@@ -55,11 +57,19 @@ export class UserService {
 	}
 
 	async update(id: number, dto: UpdateUserDto): Promise<UpdateResult> {
+		const user: IUser = await this.userRepository.findOne(id, { relations: ['address'] });
+		const address: IAddress = dto.address;
+
+		address.id = user.address.id;
+		dto.id = address.id;
+
 		const result = await this.userRepository.update(id, dto);
 
 		if (result.affected === 0) {
 			throw new HttpException(`Não há usuário com id: ${id}`, HttpStatus.NOT_FOUND);
 		}
+
+		await this.addressRepository.update(address.id, address);
 
 		return result;
 	}

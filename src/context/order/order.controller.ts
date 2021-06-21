@@ -1,4 +1,4 @@
-import { DeleteResult, UpdateResult } from 'typeorm';
+import { UpdateResult } from 'typeorm';
 
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
@@ -40,7 +40,7 @@ export class OrderController {
 	@Delete('remove/:id')
 	@UseGuards(JwtAuthGuard)
 	@ApiBearerAuth()
-	async remove(@Param('id') id: number): Promise<DeleteResult> {
+	async remove(@Param('id') id: number): Promise<boolean> {
 		return await this.orderService.remove(id);
 	}
 }

@@ -37,4 +37,19 @@ export class AuthService {
 			throw new HttpException('Usuário ou senha inválido', HttpStatus.UNAUTHORIZED);
 		}
 	}
+
+	async getOnlineUser(user: UserEntity): Promise<IUserCredentials> {
+		const { email, role } = user;
+		const payload: IJwtPayload = { email, role };
+
+		const response: IUserCredentials = {
+			fullName: user.fullName,
+			email: user.email,
+			image: user.image,
+			role: user.role,
+			accessToken: this.jwtService.sign(payload)
+		};
+
+		return response;
+	}
 }

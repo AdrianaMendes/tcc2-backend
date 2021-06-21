@@ -56,6 +56,8 @@ export class ProductService {
 			throw new HttpException(`Não há categoria com id: ${dto.categoryId}`, HttpStatus.NOT_FOUND);
 		}
 
+		delete dto.categoryId;
+
 		const result = await this.productRepository.update(id, { ...dto, category });
 
 		if (result.affected === 0) {
