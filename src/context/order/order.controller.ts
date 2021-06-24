@@ -1,12 +1,16 @@
 import { UpdateResult } from 'typeorm';
 
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 import { GetUser } from '../../auth/decorator/get-user.decorator';
+import { HasRoles } from '../../auth/decorator/has-roles.decorator';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
+import { RolesGuard } from '../../auth/guard/roles.guard';
+import { EUserRole } from '../../shared/enum/user-role.enum';
 import { UserEntity } from '../user/entities/user.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { UpdateOrderEnumDto } from './dto/update-order-enum.dto';
 import { OrderEntity } from './entities/order.entity';
 import { OrderService } from './order.service';
 
@@ -35,6 +39,15 @@ export class OrderController {
 	@ApiBearerAuth()
 	async findOne(@Param('id') id: number): Promise<OrderEntity> {
 		return await this.orderService.findOne(id);
+	}
+
+	@Patch('update/')
+	@HasRoles(EUserRole.ADMIN)
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@ApiBearerAuth()
+	@ApiBody({ type: UpdateOrderEnumDto })
+	async update(@Body() dto: UpdateOrderEnumDto): Promise<boolean> {
+		return await this.orderService.update(dto);
 	}
 
 	@Delete('remove/:id')

@@ -8,6 +8,7 @@ import { ProductEntity } from '../product/entities/product.entity';
 import { UserEntity } from '../user/entities/user.entity';
 import { CreateOrderProductDto } from './dto/create-order-product.dto';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { UpdateOrderEnumDto } from './dto/update-order-enum.dto';
 import { OrderProductEntity } from './entities/order-product.entity';
 import { OrderEntity } from './entities/order.entity';
 
@@ -93,6 +94,16 @@ export class OrderService {
 		}
 
 		return order;
+	}
+
+	async update(dto: UpdateOrderEnumDto): Promise<boolean> {
+		const result = await this.orderRepository.update(dto.id, dto);
+
+		if (result.affected === 0) {
+			throw new HttpException(`Não foi possível atualizar o pedido, id: ${dto.id}`, HttpStatus.NOT_FOUND);
+		}
+
+		return true;
 	}
 
 	async remove(id: number): Promise<boolean> {

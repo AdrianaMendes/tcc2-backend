@@ -3,7 +3,7 @@ import { IAddress } from './address.interface';
 import { IOrder } from './order.interface';
 
 export interface IUser {
-	id?: number;
+	id: number;
 	address?: IAddress;
 	orderArr?: IOrder[];
 	fullName?: string;

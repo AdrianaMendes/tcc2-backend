@@ -11,6 +11,7 @@ import { ProductModule } from './context/product/product.module';
 import { AddressEntity } from './context/user/entities/address.entity';
 import { UserModule } from './context/user/user.module';
 import { DatabaseModule } from './database/database.module';
+import { DashboardModule } from './context/dashboard/dashboard.module';
 
 @Module({
 	imports: [
@@ -21,7 +22,8 @@ import { DatabaseModule } from './database/database.module';
 		UserModule,
 		AddressEntity,
 		AuthModule,
-		OrderModule
+		OrderModule,
+		DashboardModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
