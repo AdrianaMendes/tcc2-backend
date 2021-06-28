@@ -1,14 +1,5 @@
 import { EUserRole } from 'src/shared/enum/user-role.enum';
-import {
-	Column,
-	CreateDateColumn,
-	Entity,
-	JoinColumn,
-	OneToMany,
-	OneToOne,
-	PrimaryGeneratedColumn,
-	UpdateDateColumn
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { OrderEntity } from '../../order/entities/order.entity';
 import { AddressEntity } from './address.entity';
@@ -43,7 +34,7 @@ export class UserEntity {
 	@CreateDateColumn({ name: 'creation_date' })
 	creationDate: Date;
 
-	@UpdateDateColumn({ name: 'last_login_date', nullable: true })
+	@Column({ name: 'last_login_date', type: 'timestamptz', nullable: true })
 	lastLoginDate?: Date;
 
 	@Column({ name: 'is_active', default: true })

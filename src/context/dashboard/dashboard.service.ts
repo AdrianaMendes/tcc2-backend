@@ -8,13 +8,11 @@ import { EPaymentType } from '../../shared/enum/payment-type.enum';
 import { IDashboardData } from '../../shared/interface/dashboar-data.interface';
 import { IPaymentType } from '../../shared/interface/payment-type.interface';
 import { OrderEntity } from '../order/entities/order.entity';
-import { ProductEntity } from '../product/entities/product.entity';
 import { UserEntity } from '../user/entities/user.entity';
 
 @Injectable()
 export class DashboardService {
 	constructor(
-		@InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>,
 		@InjectRepository(OrderEntity) private orderRepository: Repository<OrderEntity>,
 		@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>
 	) {}
@@ -24,7 +22,7 @@ export class DashboardService {
 		lastWeek.setDate(lastWeek.getDate() - 7);
 
 		const dashboardData: IDashboardData = {} as IDashboardData;
-		dashboardData.registredProducts = await this.productRepository.count();
+		dashboardData.registredUsers = await this.userRepository.count();
 		dashboardData.closedOrder = await this.orderRepository.count({ where: { status: EOrderStatus.CLOSE } });
 		dashboardData.paymentType = {} as IPaymentType;
 

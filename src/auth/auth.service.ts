@@ -32,6 +32,8 @@ export class AuthService {
 				accessToken: this.jwtService.sign(payload)
 			};
 
+			await this.userRepository.update(user.id, { lastLoginDate: new Date() });
+
 			return response;
 		} else {
 			throw new HttpException('Usuário ou senha inválido', HttpStatus.UNAUTHORIZED);
