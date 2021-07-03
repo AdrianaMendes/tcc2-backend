@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { LoginUserDto } from '../context/user/dto/login-user.dto';
 import { UserEntity } from '../context/user/entities/user.entity';
-import { IUserCredentials } from '../shared/interface/user-credentials.interface';
+import { IUserCredentials } from '../assets/interface/user-credentials.interface';
 import { AuthService } from './auth.service';
 import { GetUser } from './decorator/get-user.decorator';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';

@@ -1,4 +1,4 @@
-import { EUserRole } from 'src/shared/enum/user-role.enum';
+import { EUserRole } from 'src/assets/enum/user-role.enum';
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { OrderEntity } from '../../order/entities/order.entity';

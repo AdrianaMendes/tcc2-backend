@@ -3,7 +3,7 @@ import { Repository, UpdateResult } from 'typeorm';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { EOrderStatus } from '../../shared/enum/order-status.enum';
+import { EOrderStatus } from '../../assets/enum/order-status.enum';
 import { ProductEntity } from '../product/entities/product.entity';
 import { UserEntity } from '../user/entities/user.entity';
 import { CreateOrderProductDto } from './dto/create-order-product.dto';

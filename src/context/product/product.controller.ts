@@ -1,16 +1,41 @@
 import { DeleteResult, UpdateResult } from 'typeorm';
 
-import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiExcludeEndpoint, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	HttpStatus,
+	Param,
+	Patch,
+	Post,
+	UploadedFile,
+	UseGuards,
+	UseInterceptors
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import {
+	ApiBearerAuth,
+	ApiBody,
+	ApiConsumes,
+	ApiExcludeEndpoint,
+	ApiOperation,
+	ApiResponse,
+	ApiTags
+} from '@nestjs/swagger';
 
+import { EUserRole } from '../../assets/enum/user-role.enum';
 import { HasRoles } from '../../auth/decorator/has-roles.decorator';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 import { RolesGuard } from '../../auth/guard/roles.guard';
-import { EUserRole } from '../../shared/enum/user-role.enum';
+import { ImageEntity } from '../image/entities/image.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
 import { ProductService } from './product.service';
+import { Express } from 'express';
+import { ApiFile } from '../../assets/decorator/api-file.decorator';
+import { imageFileFilter } from '../../assets/utils';
 
 @Controller('product')
 @ApiTags('Produto')
@@ -62,6 +87,17 @@ export class ProductController {
 	@ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Produto não encontrado' })
 	async findOneActive(@Param('id') id: number): Promise<ProductEntity> {
 		return await this.productService.findOne(id, true);
+	}
+
+	@Post('image/:id')
+	@HasRoles(EUserRole.ADMIN)
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@ApiBearerAuth()
+	@ApiConsumes('multipart/form-data')
+	@ApiFile('file')
+	@UseInterceptors(FileInterceptor('file', { fileFilter: imageFileFilter, limits: { fileSize: 0.5 * 1024 * 1024 } }))
+	async image(@Param('id') id: number, @UploadedFile('file') file: Express.Multer.File): Promise<ImageEntity> {
+		return await this.productService.image(id, file.buffer, file.originalname);
 	}
 
 	@Patch('update/:id')

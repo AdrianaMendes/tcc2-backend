@@ -7,8 +7,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserEntity } from '../../context/user/entities/user.entity';
-import { IEnvironmentVariables } from '../../shared/interface/environment-variables.interface';
-import { IJwtPayload } from '../../shared/interface/jwt-payload.interface';
+import { IEnvironmentVariables } from '../../assets/interface/environment-variables.interface';
+import { IJwtPayload } from '../../assets/interface/jwt-payload.interface';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

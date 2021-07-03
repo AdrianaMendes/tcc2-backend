@@ -4,8 +4,8 @@ import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { IAddress } from '../../shared/interface/address.interface';
-import { IUser } from '../../shared/interface/user.interface';
+import { IAddress } from '../../assets/interface/address.interface';
+import { IUser } from '../../assets/interface/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AddressEntity } from './entities/address.entity';

@@ -6,7 +6,7 @@ import { ApiBearerAuth, ApiBody, ApiExcludeEndpoint, ApiResponse, ApiTags } from
 import { HasRoles } from '../../auth/decorator/has-roles.decorator';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 import { RolesGuard } from '../../auth/guard/roles.guard';
-import { EUserRole } from '../../shared/enum/user-role.enum';
+import { EUserRole } from '../../assets/enum/user-role.enum';
 import { ProductEntity } from '../product/entities/product.entity';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';

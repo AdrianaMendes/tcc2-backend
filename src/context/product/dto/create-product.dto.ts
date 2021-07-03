@@ -1,6 +1,7 @@
 import { IsPositive, Length, Max, MaxLength, Min } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
+import { IImage } from '../../../assets/interface/image.interface';
 
 export class CreateProductDto {
 	@ApiProperty({ description: 'Id da categoria' })
@@ -15,8 +16,8 @@ export class CreateProductDto {
 	@MaxLength(128)
 	readonly description?: string;
 
-	@ApiProperty({ required: false, default: '' })
-	readonly image?: string;
+	@ApiProperty()
+	image?: IImage;
 
 	@ApiProperty({ type: 'integer', format: 'int32', minimum: 1, maximum: 9999, default: 0 })
 	@IsPositive()

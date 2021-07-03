@@ -2,8 +2,8 @@ import { IsEnum } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 
-import { EOrderStatus } from '../../../shared/enum/order-status.enum';
-import { EPaymentType } from '../../../shared/enum/payment-type.enum';
+import { EOrderStatus } from '../../../assets/enum/order-status.enum';
+import { EPaymentType } from '../../../assets/enum/payment-type.enum';
 
 export class UpdateOrderEnumDto {
 	@ApiProperty({ description: 'Id do pedido' })

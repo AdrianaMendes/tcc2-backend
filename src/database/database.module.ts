@@ -8,7 +8,8 @@ import { OrderEntity } from '../context/order/entities/order.entity';
 import { ProductEntity } from '../context/product/entities/product.entity';
 import { AddressEntity } from '../context/user/entities/address.entity';
 import { UserEntity } from '../context/user/entities/user.entity';
-import { IEnvironmentVariables } from '../shared/interface/environment-variables.interface';
+import { IEnvironmentVariables } from '../assets/interface/environment-variables.interface';
+import { ImageEntity } from '../context/image/entities/image.entity';
 
 @Module({
 	imports: [
@@ -24,6 +25,7 @@ import { IEnvironmentVariables } from '../shared/interface/environment-variables
 					username: configService.get('DB_USERNAME'),
 					password: configService.get('DB_PASSWORD'),
 					entities: [
+						ImageEntity,
 						CategoryEntity,
 						ProductEntity,
 						OrderProductEntity,

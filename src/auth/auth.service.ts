@@ -7,8 +7,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { LoginUserDto } from '../context/user/dto/login-user.dto';
 import { UserEntity } from '../context/user/entities/user.entity';
-import { IJwtPayload } from '../shared/interface/jwt-payload.interface';
-import { IUserCredentials } from '../shared/interface/user-credentials.interface';
+import { IJwtPayload } from '../assets/interface/jwt-payload.interface';
+import { IUserCredentials } from '../assets/interface/user-credentials.interface';
 
 @Injectable()
 export class AuthService {

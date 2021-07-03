@@ -9,10 +9,15 @@ import { UserService } from '../user/user.service';
 import { ProductEntity } from './entities/product.entity';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
+import { ImageEntity } from '../image/entities/image.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
 	controllers: [ProductController],
 	providers: [ProductService, UserService],
-	imports: [TypeOrmModule.forFeature([CategoryEntity, ProductEntity, UserEntity, AddressEntity])]
+	imports: [
+		TypeOrmModule.forFeature([CategoryEntity, ProductEntity, UserEntity, AddressEntity, ImageEntity]),
+		ConfigModule
+	]
 })
 export class ProductModule {}

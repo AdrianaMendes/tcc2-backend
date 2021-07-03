@@ -6,7 +6,8 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerCustomOptions, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
-import { IEnvironmentVariables } from './shared/interface/environment-variables.interface';
+import { IEnvironmentVariables } from './assets/interface/environment-variables.interface';
+import { config as configAWS } from 'aws-sdk';
 
 async function bootstrap(): Promise<void> {
 	const logger = new Logger('Bootstrap');
@@ -33,6 +34,13 @@ async function bootstrap(): Promise<void> {
 	SwaggerModule.setup('api', app, document, customOptions);
 	app.useGlobalPipes(new ValidationPipe());
 	app.enableCors();
+
+	configAWS.update({
+		accessKeyId: configService.get('AWS_ACCESS_KEY_ID'),
+		secretAccessKey: configService.get('AWS_SECRET_ACCESS_KEY'),
+		region: configService.get('AWS_REGION')
+	});
+
 	await app.listen(configService.get('PORT'));
 	logger.log('Backend inicializado');
 }

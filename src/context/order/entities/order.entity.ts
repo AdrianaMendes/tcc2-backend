@@ -1,5 +1,5 @@
-import { EOrderStatus } from 'src/shared/enum/order-status.enum';
-import { EPaymentType } from 'src/shared/enum/payment-type.enum';
+import { EOrderStatus } from 'src/assets/enum/order-status.enum';
+import { EPaymentType } from 'src/assets/enum/payment-type.enum';
 import {
 	Column,
 	CreateDateColumn,

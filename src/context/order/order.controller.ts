@@ -7,7 +7,7 @@ import { GetUser } from '../../auth/decorator/get-user.decorator';
 import { HasRoles } from '../../auth/decorator/has-roles.decorator';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 import { RolesGuard } from '../../auth/guard/roles.guard';
-import { EUserRole } from '../../shared/enum/user-role.enum';
+import { EUserRole } from '../../assets/enum/user-role.enum';
 import { UserEntity } from '../user/entities/user.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderEnumDto } from './dto/update-order-enum.dto';

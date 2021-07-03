@@ -3,10 +3,10 @@ import { MoreThan, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { EOrderStatus } from '../../shared/enum/order-status.enum';
-import { EPaymentType } from '../../shared/enum/payment-type.enum';
-import { IDashboardData } from '../../shared/interface/dashboar-data.interface';
-import { IPaymentType } from '../../shared/interface/payment-type.interface';
+import { EOrderStatus } from '../../assets/enum/order-status.enum';
+import { EPaymentType } from '../../assets/enum/payment-type.enum';
+import { IDashboardData } from '../../assets/interface/dashboar-data.interface';
+import { IPaymentType } from '../../assets/interface/payment-type.interface';
 import { OrderEntity } from '../order/entities/order.entity';
 import { UserEntity } from '../user/entities/user.entity';
 
@@ -53,9 +53,10 @@ export class DashboardService {
 		const { sum } = await this.orderRepository
 			.createQueryBuilder('order')
 			.select('SUM(order.totalValue)')
+			.where('order.status = :status', { status: EOrderStatus.CLOSE })
 			.getRawOne();
 
-		dashboardData.movimentedValue = sum;
+		dashboardData.movimentedValue = sum !== null ? sum : 0;
 
 		return dashboardData;
 	}

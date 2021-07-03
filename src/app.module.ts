@@ -12,6 +12,7 @@ import { AddressEntity } from './context/user/entities/address.entity';
 import { UserModule } from './context/user/user.module';
 import { DatabaseModule } from './database/database.module';
 import { DashboardModule } from './context/dashboard/dashboard.module';
+import { ImageModule } from './context/image/image.module';
 
 @Module({
 	imports: [
@@ -23,7 +24,8 @@ import { DashboardModule } from './context/dashboard/dashboard.module';
 		AddressEntity,
 		AuthModule,
 		OrderModule,
-		DashboardModule
+		DashboardModule,
+		ImageModule
 	],
 	controllers: [AppController],
 	providers: [AppService]

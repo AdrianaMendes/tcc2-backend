@@ -1,5 +1,6 @@
 import { CategoryEntity } from 'src/context/category/entities/category.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { ImageEntity } from '../../image/entities/image.entity';
 
 @Entity('product')
 export class ProductEntity {
@@ -16,8 +17,9 @@ export class ProductEntity {
 	@Column({ nullable: true, type: 'varchar', length: 128 })
 	description?: string;
 
-	@Column({ nullable: true })
-	image?: string;
+	@JoinColumn({ name: 'image_id' })
+	@OneToOne(() => ImageEntity, { nullable: true })
+	image?: ImageEntity;
 
 	@Column({ type: 'smallint' })
 	amount: number;
