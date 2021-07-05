@@ -7,9 +7,7 @@ export interface IUser {
 	address?: IAddress;
 	orderArr?: IOrder[];
 	fullName?: string;
-	email?: string;
 	password?: string;
-	image?: string;
 	role?: EUserRole;
 	creationDate?: Date;
 	lastLoginDate?: Date;

@@ -3,16 +3,16 @@ import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './components/auth/auth.module';
 import { configValidationSchema } from './config/config.schema';
-import { CategoryModule } from './context/category/category.module';
-import { OrderModule } from './context/order/order.module';
-import { ProductModule } from './context/product/product.module';
-import { AddressEntity } from './context/user/entities/address.entity';
-import { UserModule } from './context/user/user.module';
+import { CategoryModule } from './components/category/category.module';
+import { DashboardModule } from './components/dashboard/dashboard.module';
+import { FileModule } from './components/file/file.module';
+import { OrderModule } from './components/order/order.module';
+import { ProductModule } from './components/product/product.module';
+import { AddressEntity } from './components/user/entities/address.entity';
+import { UserModule } from './components/user/user.module';
 import { DatabaseModule } from './database/database.module';
-import { DashboardModule } from './context/dashboard/dashboard.module';
-import { ImageModule } from './context/image/image.module';
 
 @Module({
 	imports: [
@@ -25,7 +25,7 @@ import { ImageModule } from './context/image/image.module';
 		AuthModule,
 		OrderModule,
 		DashboardModule,
-		ImageModule
+		FileModule
 	],
 	controllers: [AppController],
 	providers: [AppService]

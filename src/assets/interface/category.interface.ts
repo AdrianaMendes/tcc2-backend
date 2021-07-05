@@ -1,3 +1,4 @@
+import { IFile } from './file.interface';
 import { IProduct } from './product.interface';
 
 export interface ICategory {
@@ -5,5 +6,5 @@ export interface ICategory {
 	productArr?: IProduct[];
 	name: string;
 	description?: string;
-	image?: string;
+	image?: IFile;
 }

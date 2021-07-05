@@ -1,3 +1,4 @@
+import { config as configAWS } from 'aws-sdk';
 import * as basicAuth from 'express-basic-auth';
 
 import { Logger, ValidationPipe } from '@nestjs/common';
@@ -7,7 +8,6 @@ import { DocumentBuilder, SwaggerCustomOptions, SwaggerDocumentOptions, SwaggerM
 
 import { AppModule } from './app.module';
 import { IEnvironmentVariables } from './assets/interface/environment-variables.interface';
-import { config as configAWS } from 'aws-sdk';
 
 async function bootstrap(): Promise<void> {
 	const logger = new Logger('Bootstrap');

@@ -2,14 +2,14 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-import { CategoryEntity } from '../context/category/entities/category.entity';
-import { OrderProductEntity } from '../context/order/entities/order-product.entity';
-import { OrderEntity } from '../context/order/entities/order.entity';
-import { ProductEntity } from '../context/product/entities/product.entity';
-import { AddressEntity } from '../context/user/entities/address.entity';
-import { UserEntity } from '../context/user/entities/user.entity';
 import { IEnvironmentVariables } from '../assets/interface/environment-variables.interface';
-import { ImageEntity } from '../context/image/entities/image.entity';
+import { CategoryEntity } from '../components/category/entities/category.entity';
+import { FileEntity } from '../components/file/entities/image.entity';
+import { OrderProductEntity } from '../components/order/entities/order-product.entity';
+import { OrderEntity } from '../components/order/entities/order.entity';
+import { ProductEntity } from '../components/product/entities/product.entity';
+import { AddressEntity } from '../components/user/entities/address.entity';
+import { UserEntity } from '../components/user/entities/user.entity';
 
 @Module({
 	imports: [
@@ -25,7 +25,7 @@ import { ImageEntity } from '../context/image/entities/image.entity';
 					username: configService.get('DB_USERNAME'),
 					password: configService.get('DB_PASSWORD'),
 					entities: [
-						ImageEntity,
+						FileEntity,
 						CategoryEntity,
 						ProductEntity,
 						OrderProductEntity,
