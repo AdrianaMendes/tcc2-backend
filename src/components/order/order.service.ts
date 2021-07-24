@@ -96,6 +96,13 @@ export class OrderService {
 		return order;
 	}
 
+	async findOrderUser(id: number): Promise<OrderEntity[]> {
+		return await this.orderRepository.find({
+			where: { user: id },
+			relations: ['orderProductArr', 'orderProductArr.product']
+		});
+	}
+
 	async update(dto: UpdateOrderEnumDto): Promise<boolean> {
 		const result = await this.orderRepository.update(dto.id, dto);
 

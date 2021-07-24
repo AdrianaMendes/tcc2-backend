@@ -11,9 +11,6 @@ export class UpdateUserDto {
 	@Length(1, 64)
 	readonly fullName?: string;
 
-	@ApiProperty({ required: false, default: '' })
-	readonly image?: string;
-
 	@ApiProperty({ required: false })
 	readonly address?: CreateAddressDto;
 }

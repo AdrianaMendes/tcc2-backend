@@ -2,11 +2,11 @@ import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/comm
 import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { GetUser } from '../../assets/decorator/get-user.decorator';
+import { JwtAuthGuard } from '../../assets/guard/jwt-auth.guard';
 import { IUserCredentials } from '../../assets/interface/user-credentials.interface';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 import { UserEntity } from '../user/entities/user.entity';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from '../../assets/guard/jwt-auth.guard';
 
 @Controller('auth')
 @ApiTags('Autenticação')

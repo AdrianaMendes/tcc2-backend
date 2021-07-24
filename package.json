@@ -87,7 +87,9 @@
 	"scripts": {
 		"build": "nest build",
 		"commit": "git add . && cz",
-		"format": "prettier --write \"src/**/*.ts\"",
+		"format": "npm run lint && npm run prettier",
+		"prettier": "prettier --write \"src/**/*.{ts,js,json,css,scss,html}\"",
+		"lint": "eslint \"src/**/*.ts\" --fix",
 		"start": "npm run build && node dist/main.js",
 		"start:dev": "nest start --watch"
 	},

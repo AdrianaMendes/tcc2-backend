@@ -3,9 +3,9 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { HasRoles } from '../../assets/decorator/has-roles.decorator';
 import { EUserRole } from '../../assets/enum/user-role.enum';
-import { IDashboardData } from '../../assets/interface/dashboar-data.interface';
 import { JwtAuthGuard } from '../../assets/guard/jwt-auth.guard';
 import { RolesGuard } from '../../assets/guard/roles.guard';
+import { IDashboardData } from '../../assets/interface/dashboar-data.interface';
 import { DashboardService } from './dashboard.service';
 
 @Controller('dashboard')

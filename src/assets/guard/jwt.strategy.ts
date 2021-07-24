@@ -6,9 +6,9 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { UserEntity } from '../../components/user/entities/user.entity';
 import { IEnvironmentVariables } from '../interface/environment-variables.interface';
 import { IJwtPayload } from '../interface/jwt-payload.interface';
-import { UserEntity } from '../../components/user/entities/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -24,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
 	async validate(payload: IJwtPayload): Promise<UserEntity> {
 		const { email } = payload;
-		const user = await this.userRepository.findOne({ email });
+		const user = await this.userRepository.findOne({ email }, { relations: ['address'] });
 
 		if (!user) {
 			throw new HttpException('Falha na autenticação', HttpStatus.UNAUTHORIZED);

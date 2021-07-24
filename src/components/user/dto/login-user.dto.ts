@@ -4,10 +4,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginUserDto {
 	@ApiProperty({ minLength: 1, maxLength: 64, default: 'teste@email.com' })
-	@IsEmail()
+	@IsEmail({}, { message: 'E-mail inválido' })
 	readonly email: string;
 
 	@ApiProperty({ default: 'senha' })
-	@IsNotEmpty()
+	@IsNotEmpty({ message: 'Senha inválido' })
 	password: string;
 }

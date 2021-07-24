@@ -1,9 +1,5 @@
-import { EUserRole } from '../enum/user-role.enum';
+import { IUser } from './user.interface';
 
-export interface IUserCredentials {
-	readonly fullName: string;
-	readonly email: string;
-	readonly image?: string;
-	readonly role: EUserRole;
+export interface IUserCredentials extends IUser {
 	readonly accessToken: string;
 }

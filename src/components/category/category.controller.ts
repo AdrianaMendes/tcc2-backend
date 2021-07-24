@@ -13,21 +13,21 @@ import {
 	UseGuards,
 	UseInterceptors
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiExcludeEndpoint, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+import { ApiFile } from '../../assets/decorator/api-file.decorator';
 import { HasRoles } from '../../assets/decorator/has-roles.decorator';
 import { EUserRole } from '../../assets/enum/user-role.enum';
 import { JwtAuthGuard } from '../../assets/guard/jwt-auth.guard';
 import { RolesGuard } from '../../assets/guard/roles.guard';
+import { imageFileFilter } from '../../assets/utils';
+import { FileEntity } from '../file/entities/image.entity';
 import { ProductEntity } from '../product/entities/product.entity';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryEntity } from './entities/category.entity';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiFile } from '../../assets/decorator/api-file.decorator';
-import { imageFileFilter } from '../../assets/utils';
-import { FileEntity } from '../file/entities/image.entity';
 
 @Controller('category')
 @ApiTags('Categoria')

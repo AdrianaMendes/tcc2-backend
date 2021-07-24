@@ -18,21 +18,15 @@ export class AuthService {
 	) {}
 
 	async signIn(dto: LoginUserDto): Promise<IUserCredentials> {
-		const user = await this.userRepository.findOne({ where: { email: dto.email } });
-
+		const user = await this.userRepository.findOne({ where: { email: dto.email }, relations: ['address'] });
 		if (user && (await bcrypt.compare(dto.password, user.password))) {
 			const { email, role } = user;
 			const payload: IJwtPayload = { email, role };
-
 			const response: IUserCredentials = {
-				fullName: user.fullName,
-				email: user.email,
-				role: user.role,
+				...user,
 				accessToken: this.jwtService.sign(payload)
 			};
-
 			await this.userRepository.update(user.id, { lastLoginDate: new Date() });
-
 			return response;
 		} else {
 			throw new HttpException('Usuário ou senha inválido', HttpStatus.UNAUTHORIZED);
@@ -42,14 +36,10 @@ export class AuthService {
 	async getOnlineUser(user: UserEntity): Promise<IUserCredentials> {
 		const { email, role } = user;
 		const payload: IJwtPayload = { email, role };
-
 		const response: IUserCredentials = {
-			fullName: user.fullName,
-			email: user.email,
-			role: user.role,
+			...user,
 			accessToken: this.jwtService.sign(payload)
 		};
-
 		return response;
 	}
 }

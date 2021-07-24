@@ -41,6 +41,13 @@ export class OrderController {
 		return await this.orderService.findOne(id);
 	}
 
+	@Get('findOrderUser/:id')
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
+	async findOrderUser(@Param('id') id: number): Promise<OrderEntity[]> {
+		return await this.orderService.findOrderUser(id);
+	}
+
 	@Patch('update/')
 	@HasRoles(EUserRole.ADMIN)
 	@UseGuards(JwtAuthGuard, RolesGuard)

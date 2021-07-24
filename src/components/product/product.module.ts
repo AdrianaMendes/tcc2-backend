@@ -4,10 +4,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { FileModule } from '../file/file.module';
+import { UserModule } from '../user/user.module';
 import { ProductEntity } from './entities/product.entity';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
-import { UserModule } from '../user/user.module';
 
 @Module({
 	controllers: [ProductController],
