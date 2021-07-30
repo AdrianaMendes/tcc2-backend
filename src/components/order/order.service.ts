@@ -42,6 +42,7 @@ export class OrderService {
 			}
 		}
 
+		// Remove itens excluídos do Array
 		orderProductArr = orderProductArr.filter(x => x !== undefined);
 
 		// Update
@@ -63,7 +64,7 @@ export class OrderService {
 			}
 		}
 
-		order.totalValue = this.getTotalValueOrder(orderProductArr);
+		order.totalValue = await this.getTotalValueOrder(dto.orderProductDtoArr);
 
 		const result = await this.orderRepository.update(order.id, order);
 
@@ -103,6 +104,13 @@ export class OrderService {
 		});
 	}
 
+	async findOpenOrderUser(id: number): Promise<OrderEntity> {
+		return await this.orderRepository.findOne({
+			where: { user: id, status: EOrderStatus.OPEN },
+			relations: ['orderProductArr', 'orderProductArr.product']
+		});
+	}
+
 	async update(dto: UpdateOrderEnumDto): Promise<boolean> {
 		const result = await this.orderRepository.update(dto.id, dto);
 
@@ -111,6 +119,34 @@ export class OrderService {
 		}
 
 		return true;
+	}
+
+	async closeOrder(id: number): Promise<boolean> {
+		const processingOrder = await this.orderRepository.findOne(id, {
+			relations: ['orderProductArr', 'orderProductArr.product']
+		});
+
+		// Existe pedido em processamento
+		if (processingOrder) {
+			for (const obj of processingOrder.orderProductArr) {
+				if (obj.amount > obj.product.amount) {
+					console.error('Produto insuficiente:', { obj });
+				}
+			}
+
+			for (const obj of processingOrder.orderProductArr) {
+				this.updateOrderProduct(obj.id, obj.amount, false);
+			}
+
+			const order = await this.orderRepository.findOne(id);
+			order.status = EOrderStatus.CLOSE;
+
+			await this.orderRepository.update(order.id, order);
+
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	async remove(id: number): Promise<boolean> {
@@ -164,7 +200,7 @@ export class OrderService {
 			}
 
 			// Atualiza o estoque
-			product.amount = product.amount + orderProduct.amount - amount;
+			product.amount -= amount;
 			await this.productRepository.update(product.id, product);
 		}
 
@@ -192,10 +228,11 @@ export class OrderService {
 		await this.orderProductRepository.delete(id);
 	}
 
-	private getTotalValueOrder(orderProductArr: OrderProductEntity[]): number {
+	private async getTotalValueOrder(orderProductArr: CreateOrderProductDto[]): Promise<number> {
 		let value = 0;
 		for (const iterator of orderProductArr) {
-			value += iterator.originalProductValue * iterator.amount;
+			const p = await this.productRepository.findOne(iterator.productId);
+			value = value + p.value * iterator.amount;
 		}
 		return value;
 	}

@@ -48,6 +48,13 @@ export class OrderController {
 		return await this.orderService.findOrderUser(id);
 	}
 
+	@Get('findOpenOrderUser/:id')
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
+	async findOpenOrderUser(@Param('id') id: number): Promise<OrderEntity> {
+		return await this.orderService.findOpenOrderUser(id);
+	}
+
 	@Patch('update/')
 	@HasRoles(EUserRole.ADMIN)
 	@UseGuards(JwtAuthGuard, RolesGuard)
@@ -55,6 +62,14 @@ export class OrderController {
 	@ApiBody({ type: UpdateOrderEnumDto })
 	async update(@Body() dto: UpdateOrderEnumDto): Promise<boolean> {
 		return await this.orderService.update(dto);
+	}
+
+	@Patch('closeOrder/:id')
+	@HasRoles(EUserRole.ADMIN)
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@ApiBearerAuth()
+	async closeOrder(@Param('id') id: number): Promise<boolean> {
+		return await this.orderService.closeOrder(id);
 	}
 
 	@Delete('remove/:id')
