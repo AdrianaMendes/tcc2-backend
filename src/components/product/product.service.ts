@@ -9,6 +9,7 @@ import { FileService } from '../file/file.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
+import { IProduct } from '../../assets/interface/product.interface';
 
 @Injectable()
 export class ProductService {
@@ -32,6 +33,35 @@ export class ProductService {
 		const productArr = isActive
 			? await this.productRepository.find({ relations: ['category', 'image'], where: { isActive: true } })
 			: await this.productRepository.find({ relations: ['category', 'image'] });
+
+		if (productArr.length === 0) {
+			throw new HttpException('Não há produto cadastrado', HttpStatus.NO_CONTENT);
+		}
+
+		return productArr;
+	}
+
+	async searchProduct(categoryId: number, productName: string): Promise<ProductEntity[]> {
+		let productArr: ProductEntity[] = [];
+
+		if(!isNaN(categoryId) && productName != 'undefined') {
+			productArr = await this.productRepository.find({
+				relations: ['category', 'image'],
+				where: { isActive: true, name: productName, category: {id: categoryId} }
+			});
+		}
+		else if(!isNaN(categoryId)) {
+			productArr = await this.productRepository.find({
+				relations: ['category', 'image'],
+				where: { isActive: true, category: {id: categoryId} }
+			});
+		}
+		else if(productName != 'undefined') {
+			productArr = await this.productRepository.find({
+				relations: ['category', 'image'],
+				where: { isActive: true, name: productName }
+			});
+		}
 
 		if (productArr.length === 0) {
 			throw new HttpException('Não há produto cadastrado', HttpStatus.NO_CONTENT);

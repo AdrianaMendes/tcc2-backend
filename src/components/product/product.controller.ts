@@ -71,6 +71,15 @@ export class ProductController {
 		return await this.productService.findAll(true);
 	}
 
+	@Get('searchProduct/:categoryId/:productName')
+	@ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Não há produto cadastrado' })
+	async searchProduct(
+		@Param('categoryId') categoryId: number,
+		@Param('productName') productName: string
+	): Promise<ProductEntity[]> {
+		return await this.productService.searchProduct(categoryId, productName);
+	}
+
 	@Get('findOne/:id')
 	@HasRoles(EUserRole.ADMIN)
 	@UseGuards(JwtAuthGuard, RolesGuard)
