@@ -31,7 +31,7 @@ export class DashboardService {
 			order: {
 				lastLoginDate: 'ASC'
 			},
-			take: 5
+			take: 10
 		});
 
 		dashboardData.paymentType.CASH = await this.orderRepository.count({
