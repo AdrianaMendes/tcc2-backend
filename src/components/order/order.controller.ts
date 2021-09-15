@@ -56,8 +56,7 @@ export class OrderController {
 	}
 
 	@Patch('update/')
-	@HasRoles(EUserRole.ADMIN)
-	@UseGuards(JwtAuthGuard, RolesGuard)
+	@UseGuards(JwtAuthGuard)
 	@ApiBearerAuth()
 	@ApiBody({ type: UpdateOrderEnumDto })
 	async update(@Body() dto: UpdateOrderEnumDto): Promise<boolean> {
