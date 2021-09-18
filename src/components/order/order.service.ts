@@ -100,7 +100,11 @@ export class OrderService {
 	async findOrderUser(id: number): Promise<OrderEntity[]> {
 		return await this.orderRepository.find({
 			where: { user: id },
-			relations: ['orderProductArr', 'orderProductArr.product']
+			relations: ['orderProductArr', 'orderProductArr.product'],
+			order: {
+				updateDate: 'DESC'
+			},
+
 		});
 	}
 
