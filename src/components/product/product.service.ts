@@ -1,15 +1,12 @@
-import { CategoryEntity } from 'src/components/category/entities/category.entity';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-
+import { CategoryEntity } from 'src/components/category/entities/category.entity';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { FileEntity } from '../file/entities/image.entity';
 import { FileService } from '../file/file.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
-import { IProduct } from '../../assets/interface/product.interface';
 
 @Injectable()
 export class ProductService {
@@ -41,22 +38,50 @@ export class ProductService {
 		return productArr;
 	}
 
+	async findMostRecent(): Promise<ProductEntity[]> {
+		const productArr = await this.productRepository.find({
+			relations: ['category', 'image'],
+			where: { isActive: true },
+			take: 5,
+			order: { id: 'DESC' }
+		});
+
+		if (productArr.length === 0) {
+			throw new HttpException('Não há produto cadastrado', HttpStatus.NO_CONTENT);
+		}
+
+		return productArr;
+	}
+
+	async findMostInStock(): Promise<ProductEntity[]> {
+		const productArr = await this.productRepository.find({
+			relations: ['category', 'image'],
+			where: { isActive: true },
+			take: 5,
+			order: { amount: 'DESC' }
+		});
+
+		if (productArr.length === 0) {
+			throw new HttpException('Não há produto cadastrado', HttpStatus.NO_CONTENT);
+		}
+
+		return productArr;
+	}
+
 	async searchProduct(categoryId: number, productName: string): Promise<ProductEntity[]> {
 		let productArr: ProductEntity[] = [];
 
-		if(!isNaN(categoryId) && productName != 'undefined') {
+		if (!isNaN(categoryId) && productName != 'undefined') {
 			productArr = await this.productRepository.find({
 				relations: ['category', 'image'],
-				where: { isActive: true, name: productName, category: {id: categoryId} }
+				where: { isActive: true, name: productName, category: { id: categoryId } }
 			});
-		}
-		else if(!isNaN(categoryId)) {
+		} else if (!isNaN(categoryId)) {
 			productArr = await this.productRepository.find({
 				relations: ['category', 'image'],
-				where: { isActive: true, category: {id: categoryId} }
+				where: { isActive: true, category: { id: categoryId } }
 			});
-		}
-		else if(productName != 'undefined') {
+		} else if (productName != 'undefined') {
 			productArr = await this.productRepository.find({
 				relations: ['category', 'image'],
 				where: { isActive: true, name: productName }

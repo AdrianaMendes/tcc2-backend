@@ -1,6 +1,3 @@
-import { Express } from 'express';
-import { DeleteResult, UpdateResult } from 'typeorm';
-
 import {
 	Body,
 	Controller,
@@ -24,7 +21,7 @@ import {
 	ApiResponse,
 	ApiTags
 } from '@nestjs/swagger';
-
+import { DeleteResult, UpdateResult } from 'typeorm';
 import { ApiFile } from '../../assets/decorator/api-file.decorator';
 import { HasRoles } from '../../assets/decorator/has-roles.decorator';
 import { EUserRole } from '../../assets/enum/user-role.enum';
@@ -69,6 +66,24 @@ export class ProductController {
 	})
 	async findAllActive(): Promise<ProductEntity[]> {
 		return await this.productService.findAll(true);
+	}
+
+	@Get('findMostRecent')
+	@ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Não há produto cadastrado' })
+	@ApiOperation({
+		description: 'Endpoint utilizado para listar 5 produtos ativos adicionados recentemente'
+	})
+	async findMostRecent(): Promise<ProductEntity[]> {
+		return await this.productService.findMostRecent();
+	}
+
+	@Get('findMostInStock')
+	@ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Não há produto cadastrado' })
+	@ApiOperation({
+		description: 'Endpoint utilizado para listar 5 produtos ativos com maior estoque'
+	})
+	async findMostInStock(): Promise<ProductEntity[]> {
+		return await this.productService.findMostInStock();
 	}
 
 	@Get('searchProduct/:categoryId/:productName')
