@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from 'src/components/category/entities/category.entity';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, ILike, Repository, UpdateResult } from 'typeorm';
 import { FileEntity } from '../file/entities/image.entity';
 import { FileService } from '../file/file.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -74,7 +74,7 @@ export class ProductService {
 		if (!isNaN(categoryId) && productName != 'undefined') {
 			productArr = await this.productRepository.find({
 				relations: ['category', 'image'],
-				where: { isActive: true, name: productName, category: { id: categoryId } }
+				where: { isActive: true, name: ILike(`%${productName}%`), category: { id: categoryId }}
 			});
 		} else if (!isNaN(categoryId)) {
 			productArr = await this.productRepository.find({
@@ -84,7 +84,7 @@ export class ProductService {
 		} else if (productName != 'undefined') {
 			productArr = await this.productRepository.find({
 				relations: ['category', 'image'],
-				where: { isActive: true, name: productName }
+				where: { isActive: true, name: ILike(`%${productName}%`) }
 			});
 		}
 
