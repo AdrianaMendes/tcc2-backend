@@ -18,7 +18,10 @@ export class AuthService {
 	) {}
 
 	async signIn(dto: LoginUserDto): Promise<IUserCredentials> {
-		const user = await this.userRepository.findOne({ where: { email: dto.email }, relations: ['address'] });
+		const user = await this.userRepository.findOne({
+			where: { email: dto.email, isActive: true },
+			relations: ['address']
+		});
 		if (user && (await bcrypt.compare(dto.password, user.password))) {
 			const { email, role } = user;
 			const payload: IJwtPayload = { email, role };
