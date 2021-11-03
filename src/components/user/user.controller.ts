@@ -77,7 +77,6 @@ export class UserController {
 	}
 
 	@Patch('toggleAvailability/:id')
-	@HasRoles(EUserRole.ADMIN)
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@ApiBearerAuth()
 	@ApiOperation({ description: 'Endpoint utilizado para efetuar exclusão lógica' })
