@@ -28,11 +28,3 @@ O presente repositório foi empregado na criação do backend da aplicação "En
 
 Este projeto está sob licença privada © 2021 Adriana Mirian Mendes Cardoso.
 Para mais informações acesse o arquivo :scroll:`LICENSE.md`.
-
-# Contato
-
-:email: E-Mail: ​[adriana.cardoso@aluno.ufop.edu.br](adriana.cardoso@aluno.ufop.edu.br)
-
-:clipboard: Linkedin: ​[https://www.linkedin.com/in/adriana-mendes-cardoso/](https://www.linkedin.com/in/adriana-mendes-engenheira-de-computacao/)
-
-:package: GitHub:  [https://github.com/AdrianaMendes](https://github.com/AdrianaMendes)
