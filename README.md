@@ -26,5 +26,4 @@ O presente repositório foi empregado na criação do backend da aplicação "En
 
 # Licença
 
-Este projeto está sob licença privada © 2021 Adriana Mirian Mendes Cardoso.
-Para mais informações acesse o arquivo :scroll:`LICENSE.md`.
+Este projeto está sob licença privada © 2021 Adriana Cardoso. Para mais informações acesse o arquivo :scroll:`LICENSE.md`.
